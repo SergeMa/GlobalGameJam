@@ -29,7 +29,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera)
 	UCameraComponent* Camera;
 
-	UPROPERTY(EditAnywhere, Category = Input)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputMappingContext* InputMapping;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Input)
@@ -48,6 +48,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	int CurrentHealth = 100;
+
+	UFUNCTION()
+	void HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
 private:
 	UFUNCTION()
