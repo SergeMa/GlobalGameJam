@@ -43,7 +43,8 @@ void ABaseEnemyCharacter::HandleTakeAnyDamage(AActor* DamagedActor, float Damage
 {
 	FMath::Clamp(Health-Damage, 0, MaxHealth);
 
-	UE_LOG(LogTemp, Error, TEXT("TakeDamage"));
+	if (Health == 0)
+		Destroy();
 }
 
 

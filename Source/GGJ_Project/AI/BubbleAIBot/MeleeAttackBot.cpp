@@ -26,17 +26,13 @@ void AMeleeAttackBot::OnCollisionOverlap(UPrimitiveComponent* OverlappedComponen
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDel, 0.3, true);
 
 	}
-
-
-	UE_LOG(LogTemp, Error, TEXT("StartOverlap"));
+	
 }
 
 void AMeleeAttackBot::OnCollisionEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	
-
+	if (!GetWorld())return;
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
-	UE_LOG(LogTemp, Error, TEXT("OnCollisionEndOverlap"));
 	
 }
 void AMeleeAttackBot::MeeleAttack(AActor* Actor)
