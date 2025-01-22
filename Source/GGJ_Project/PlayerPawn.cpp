@@ -109,8 +109,8 @@ void APlayerPawn::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const 
 	{
 		GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Red, FString::Printf(TEXT("Health: %d"), CurrentHealth));
 	}
-
-	UE_LOG(LogTemp, Error, TEXT("TakeDamage"));
+	
+	
 }
 
 void APlayerPawn::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
