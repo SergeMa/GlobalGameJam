@@ -2,16 +2,16 @@
 
 
 #include "GGJ_Project/AI/BaseEnemyCharacter.h"
+#include "Components\CapsuleComponent.h"
 
 // Sets default values
 ABaseEnemyCharacter::ABaseEnemyCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	GetCapsuleComponent()->InitCapsuleSize(50.f, 50.f);
 	Health = 100;
 	OnTakeAnyDamage.AddDynamic(this, &ABaseEnemyCharacter::HandleTakeAnyDamage);
-
 }
 
 // Called when the game starts or when spawned
