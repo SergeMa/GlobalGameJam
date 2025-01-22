@@ -1,7 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PlayerPawn.h"
+#include "Components/CapsuleComponent.h"
+#include "AI/BaseEnemyCharacter.h"
+#include "Engine/DamageEvents.h" 
 #include "Interactible.h"
 #include "Components\CapsuleComponent.h"
 
@@ -11,6 +13,7 @@ APlayerPawn::APlayerPawn()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	
 }
 
 // Called when the game starts or when spawned
@@ -34,6 +37,7 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
+
 
 
 void APlayerPawn::OnCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

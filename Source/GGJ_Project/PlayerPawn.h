@@ -28,6 +28,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
 	UPROPERTY(EditAnywhere)
 	int MaxHealth = 100;
 
@@ -38,5 +39,4 @@ private:
 	UFUNCTION()
 	void OnCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
 		int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
 };
