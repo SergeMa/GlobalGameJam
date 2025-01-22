@@ -40,8 +40,4 @@ public:
 private:
 	int Health;
 	int MaxHealth=100;
-<<<<<<< HEAD
-=======
-	
->>>>>>> main
 };
