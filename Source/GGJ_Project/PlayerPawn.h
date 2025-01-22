@@ -35,9 +35,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Input)
 	UInputAction* ActionMove;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = PlayerStats)
-	int Health;
-
 protected:
 	virtual void BeginPlay() override;
 
@@ -51,6 +48,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	int CurrentHealth = 100;
+
+	UFUNCTION()
+	void HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
 private:
 	UFUNCTION()
