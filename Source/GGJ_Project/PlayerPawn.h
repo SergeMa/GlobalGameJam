@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "PlayerPawn.generated.h"
 
+class UPlayerAbilityComponent;
 class UCameraComponent;
 class USpringArmComponent;
 struct FInputActionValue;
@@ -43,6 +44,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Move(const FInputActionValue& Value);
 
+	UPROPERTY(EditAnywhere, Category = Abilities)
+	UPlayerAbilityComponent* Abilities;
+	
 	UPROPERTY(EditAnywhere)
 	int MaxHealth = 100;
 
@@ -54,7 +58,7 @@ public:
 
 private:
 	UFUNCTION()
-	void OnCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
 		int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 };
