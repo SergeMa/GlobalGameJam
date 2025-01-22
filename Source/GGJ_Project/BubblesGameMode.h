@@ -13,4 +13,15 @@ UCLASS()
 class GGJ_PROJECT_API ABubblesGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+	ABubblesGameMode();
+	
+private:
+	UPROPERTY(EditAnywhere, Category = Difficulty)
+	int DifficultyLevel;
+
+public:
+	int GetDifficultyLevel() const;
+	void IncrementDifficultyLevel();
 };

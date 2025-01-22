@@ -8,11 +8,8 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-
 #include "AI/BaseEnemyCharacter.h"
-#include "Engine/DamageEvents.h" 
 #include "Interactible.h"
-#include "Components\CapsuleComponent.h"
 
 
 APlayerPawn::APlayerPawn()
