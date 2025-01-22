@@ -82,7 +82,7 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 void APlayerPawn::Move(const FInputActionValue& Value)
 {
-	FVector2D MovementVector = Value.Get<FVector2D>().GetSafeNormal();
+	const FVector2D MovementVector = Value.Get<FVector2D>().GetSafeNormal();
 
 	if (Controller != nullptr)
 	{

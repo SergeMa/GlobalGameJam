@@ -29,11 +29,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera)
 	UCameraComponent* Camera;
 
-	UPROPERTY(EditAnywhere, Category = Input)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputMappingContext* InputMapping;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Input)
 	UInputAction* ActionMove;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = PlayerStats)
+	int Health;
 
 protected:
 	virtual void BeginPlay() override;
