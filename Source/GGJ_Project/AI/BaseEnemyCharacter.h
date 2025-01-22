@@ -33,10 +33,12 @@ public:
 	void HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
 		AController* InstigatedBy, AActor* DamageCauser);
 
+
 	int GetHealth() { return Health; }
 	void SetHealth(int Value) { Health = Value; }
+	
 private:
 	int Health;
 	int MaxHealth=100;
-	int TouchDamage; // Шкода від оверлапу з цим актором
+	
 };

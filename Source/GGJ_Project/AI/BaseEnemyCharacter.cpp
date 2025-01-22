@@ -3,6 +3,8 @@
 
 #include "GGJ_Project/AI/BaseEnemyCharacter.h"
 #include "Components\CapsuleComponent.h"
+#include "GGJ_Project/PlayerPawn.h"
+#include "Engine/DamageEvents.h"
 
 // Sets default values
 ABaseEnemyCharacter::ABaseEnemyCharacter()
@@ -12,6 +14,7 @@ ABaseEnemyCharacter::ABaseEnemyCharacter()
 	GetCapsuleComponent()->InitCapsuleSize(50.f, 50.f);
 	Health = 100;
 	OnTakeAnyDamage.AddDynamic(this, &ABaseEnemyCharacter::HandleTakeAnyDamage);
+	
 }
 
 // Called when the game starts or when spawned
@@ -42,6 +45,8 @@ void ABaseEnemyCharacter::HandleTakeAnyDamage(AActor* DamagedActor, float Damage
 
 	UE_LOG(LogTemp, Error, TEXT("TakeDamage"));
 }
+
+
 
 
 void ABaseEnemyCharacter::Attack()
