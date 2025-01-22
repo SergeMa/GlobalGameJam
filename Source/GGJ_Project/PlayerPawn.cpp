@@ -18,7 +18,7 @@
 APlayerPawn::APlayerPawn()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	
+
 	GetCapsuleComponent()->InitCapsuleSize(50.f, 50.f);
 	RootComponent = GetRootComponent();
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
@@ -27,7 +27,7 @@ APlayerPawn::APlayerPawn()
 	// Camera
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(RootComponent);
-	SpringArm->TargetArmLength = 400.0f;	
+	SpringArm->TargetArmLength = 400.0f;
 	SpringArm->bUsePawnControlRotation = true;
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
@@ -35,7 +35,7 @@ APlayerPawn::APlayerPawn()
 
 
 	// Movement
-	GetCharacterMovement()->bOrientRotationToMovement = true;	
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
@@ -43,7 +43,7 @@ APlayerPawn::APlayerPawn()
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
-
+}
 
 void APlayerPawn::BeginPlay()
 {
