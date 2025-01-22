@@ -104,7 +104,7 @@ void APlayerPawn::Move(const FInputActionValue& Value)
 
 void APlayerPawn::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-	CurrentHealth = FMath::Clamp(CurrentHealth-10, 0, MaxHealth);
+	CurrentHealth = FMath::Clamp(CurrentHealth-Damage, 0, MaxHealth);
 
 	if (GEngine)
 	{

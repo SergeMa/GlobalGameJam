@@ -38,5 +38,4 @@ public:
 private:
 	int Health;
 	int MaxHealth=100;
-	int TouchDamage; // Шкода від оверлапу з цим актором
 };
