@@ -9,6 +9,6 @@ void IInteractible::Interact()
 {
 	if (GEngine) 
 	{
-		GEngine->AddOnScreenDebugMessage(0, 2, FColor::Red, FString::Printf(TEXT("No interact implementation given")));
+		GEngine->AddOnScreenDebugMessage(0, 1, FColor::Red, FString::Printf(TEXT("Interacted with actor")));
 	}
 }
