@@ -4,6 +4,9 @@
 #include "Components/CapsuleComponent.h"
 #include "AI/BaseEnemyCharacter.h"
 #include "Engine/DamageEvents.h" 
+#include "Interactible.h"
+#include "Components\CapsuleComponent.h"
+
 // Sets default values
 APlayerPawn::APlayerPawn()
 {
@@ -17,7 +20,8 @@ APlayerPawn::APlayerPawn()
 void APlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &APlayerPawn::OnCollisionOverlap);
 }
 
 // Called every frame
@@ -35,3 +39,11 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 }
 
 
+
+void APlayerPawn::OnCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (IInteractible* Interactible = Cast<IInteractible>(OtherActor))
+	{
+		Interactible->Interact();
+	}
+}
