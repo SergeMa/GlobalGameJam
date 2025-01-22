@@ -22,6 +22,6 @@ class GGJ_PROJECT_API IInteractible
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	UFUNCTION()
-	virtual void Interact();
+	UFUNCTION(BlueprintNativeEvent)
+	void Interact();
 };

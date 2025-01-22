@@ -22,7 +22,10 @@ void APickup::BeginPlay()
 
 void APickup::Interact_Implementation()
 {
-	IInteractible::Interact();
+	if(GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(3, 5.f, FColor::Green, "APickup Interact");
+	}
 	Destroy();
 }
 

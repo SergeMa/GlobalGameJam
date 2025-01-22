@@ -24,8 +24,8 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	UFUNCTION(BlueprintNativeEvent)
-	void Interact() override;
+	UFUNCTION()
+	void Interact_Implementation();
 
 private:
 	UPROPERTY(EditDefaultsOnly)

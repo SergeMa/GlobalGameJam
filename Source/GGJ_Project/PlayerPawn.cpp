@@ -61,6 +61,8 @@ void APlayerPawn::BeginPlay()
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &APlayerPawn::OnCollisionOverlap);
 
+	OnTakeAnyDamage.AddDynamic(this, &APlayerPawn::HandleTakeAnyDamage);
+
 }
 
 void APlayerPawn::Tick(float DeltaTime)
@@ -82,7 +84,7 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 void APlayerPawn::Move(const FInputActionValue& Value)
 {
-	FVector2D MovementVector = Value.Get<FVector2D>().GetSafeNormal();
+	const FVector2D MovementVector = Value.Get<FVector2D>().GetSafeNormal();
 
 	if (Controller != nullptr)
 	{
@@ -96,15 +98,26 @@ void APlayerPawn::Move(const FInputActionValue& Value)
 
 	if(GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, FString::Printf(TEXT("Movement: %f, %f"), MovementVector.X, MovementVector.Y));
+		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Yellow, FString::Printf(TEXT("Movement: %f, %f"), MovementVector.X, MovementVector.Y));
 	}
+}
+
+void APlayerPawn::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
+{
+	CurrentHealth = FMath::Clamp(CurrentHealth-10, 0, MaxHealth);
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Red, FString::Printf(TEXT("Health: %d"), CurrentHealth));
+	}
+
+	UE_LOG(LogTemp, Error, TEXT("TakeDamage"));
 }
 
 void APlayerPawn::OnCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (IInteractible* Interactible = Cast<IInteractible>(OtherActor))
+	if(OtherActor->GetClass()->ImplementsInterface(UInteractible::StaticClass()))
 	{
-		Interactible->Interact();
+		IInteractible::Execute_Interact(OtherActor);
 	}
 }
-
