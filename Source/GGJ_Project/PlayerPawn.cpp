@@ -84,6 +84,6 @@ void APlayerPawn::Move(const FInputActionValue& Value)
 
 	if(GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Movement: %f, %f"), MovementVector.X, MovementVector.Y));
+		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, FString::Printf(TEXT("Movement: %f, %f"), MovementVector.X, MovementVector.Y));
 	}
 }

@@ -35,9 +35,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Input)
 	UInputAction* ActionMove;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
-	int MoveSpeed;
-
 protected:
 	virtual void BeginPlay() override;
 
