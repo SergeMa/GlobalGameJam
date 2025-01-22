@@ -27,10 +27,14 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual void Attack();
+	virtual void OnDeath();
 
 	UFUNCTION()
 	void HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
 		AController* InstigatedBy, AActor* DamageCauser);
+
+	int GetHealth() { return Health; }
+	void SetHealth(int Value) { Health = Value; }
 private:
 	int Health;
 	int MaxHealth=100;

@@ -35,9 +35,6 @@ void ABaseEnemyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 }
 
-void ABaseEnemyCharacter::Attack()
-{
-}
 
 void ABaseEnemyCharacter::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
@@ -46,3 +43,12 @@ void ABaseEnemyCharacter::HandleTakeAnyDamage(AActor* DamagedActor, float Damage
 	UE_LOG(LogTemp, Error, TEXT("TakeDamage"));
 }
 
+
+void ABaseEnemyCharacter::Attack()
+{
+	
+}
+
+void ABaseEnemyCharacter::OnDeath()
+{
+}
