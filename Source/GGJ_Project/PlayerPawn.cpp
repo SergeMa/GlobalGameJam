@@ -1,13 +1,19 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PlayerPawn.h"
+
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+
+#include "AI/BaseEnemyCharacter.h"
+#include "Engine/DamageEvents.h" 
+#include "Interactible.h"
+#include "Components\CapsuleComponent.h"
+
 
 APlayerPawn::APlayerPawn()
 {
@@ -27,6 +33,7 @@ APlayerPawn::APlayerPawn()
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 	Camera->bUsePawnControlRotation = false;
 
+
 	// Movement
 	GetCharacterMovement()->bOrientRotationToMovement = true;	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
@@ -36,12 +43,11 @@ APlayerPawn::APlayerPawn()
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
-}
+
 
 void APlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
 	// Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
@@ -50,6 +56,10 @@ void APlayerPawn::BeginPlay()
 			Subsystem->AddMappingContext(InputMapping, 0);
 		}
 	}
+
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &APlayerPawn::OnCollisionOverlap);
+
 }
 
 void APlayerPawn::Tick(float DeltaTime)
@@ -67,6 +77,7 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		EnhancedInputComponent->BindAction(ActionMove, ETriggerEvent::Triggered, this, &APlayerPawn::Move);
 	}
 }
+
 
 void APlayerPawn::Move(const FInputActionValue& Value)
 {
@@ -87,3 +98,12 @@ void APlayerPawn::Move(const FInputActionValue& Value)
 		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, FString::Printf(TEXT("Movement: %f, %f"), MovementVector.X, MovementVector.Y));
 	}
 }
+
+void APlayerPawn::OnCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (IInteractible* Interactible = Cast<IInteractible>(OtherActor))
+	{
+		Interactible->Interact();
+	}
+}
+
