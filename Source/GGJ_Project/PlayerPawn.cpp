@@ -113,6 +113,10 @@ void APlayerPawn::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 {
 	if(OtherActor->GetClass()->ImplementsInterface(UInteractible::StaticClass()))
 	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Red, FString::Printf(TEXT("Interacted with %s"), *OtherActor->GetName()));
+		}
 		IInteractible::Execute_Interact(OtherActor, this);
 	}
 }

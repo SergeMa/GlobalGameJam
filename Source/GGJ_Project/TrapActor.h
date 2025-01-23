@@ -9,6 +9,7 @@
 
 class UStaticMeshComponent;
 class UBoxComponent;
+class ACharacter;
 
 UCLASS()
 class GGJ_PROJECT_API ATrapActor : public AActor, public IInteractible
@@ -27,12 +28,17 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION()
-	void Interact_Implementation();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TArray<ACharacter*> TrapVictims;
+
+	UPROPERTY(EditAnywhere)
+	bool TriggerOnlyOnPlayer = false;
 
 	UFUNCTION(BlueprintNativeEvent)
-	void OnMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
-		int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void TrapEffect(ACharacter* Victim);
+
+	UFUNCTION()
+	void Interact_Implementation(APlayerPawn* PlayerPawn);
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -64,6 +70,10 @@ private:
 
 	UPROPERTY()
 	bool IsActivated = false;
+
+	UFUNCTION()
+	void OnMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
+		int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UPROPERTY()
 	FTimerHandle ActivationTimerHandle;

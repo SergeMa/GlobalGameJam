@@ -5,6 +5,7 @@
 #include "Components\StaticMeshComponent.h"
 #include "Components\BoxComponent.h"
 #include "TimerManager.h"
+#include "PlayerPawn.h"
 
 // Sets default values
 ATrapActor::ATrapActor()
@@ -24,10 +25,12 @@ void ATrapActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Bind overlap events
+    TrapActivationArea->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECR_Overlap);
+    TrapMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECR_Overlap);
 
     TrapMesh->SetGenerateOverlapEvents(true);
 	TrapMesh->OnComponentBeginOverlap.AddDynamic(this, &ATrapActor::OnMeshOverlap);
+	TrapActivationArea->OnComponentBeginOverlap.AddDynamic(this, &ATrapActor::OnMeshOverlap);
 
     MeshLowerLocation = TrapMesh->GetRelativeLocation();
 	MeshUpperLocation = TrapMesh->GetRelativeLocation() + FVector(0, 0, TravelUpDistance);
@@ -43,7 +46,11 @@ void ATrapActor::Tick(float DeltaTime)
         FVector NewLocation = FMath::VInterpConstantTo(TrapMesh->GetRelativeLocation(), MeshUpperLocation, DeltaTime, TravelUpSpeed);
         TrapMesh->SetRelativeLocation(NewLocation);
     }
-
+    else
+    {
+        FVector NewLocation = FMath::VInterpConstantTo(MeshLowerLocation, TrapMesh->GetRelativeLocation(), DeltaTime, TravelDownSpeed);
+        TrapMesh->SetRelativeLocation(NewLocation);
+    }
 }
 
 void ATrapActor::ResetActivationState()
@@ -51,21 +58,50 @@ void ATrapActor::ResetActivationState()
     IsActivated = false;
 
     // Optionally, move the mesh back to its initial location
-    TrapMesh->SetRelativeLocation(MeshUpperLocation - FVector(0, 0, TravelUpDistance));
+    TrapMesh->SetRelativeLocation(MeshLowerLocation);
+    TrapVictims.Empty();    
+    UE_LOG(LogTemp, Warning, TEXT("Trap Reset"));
 }
 
-void ATrapActor::Interact_Implementation()
+void ATrapActor::TrapEffect_Implementation(ACharacter* Victim)
+{
+
+}
+
+void ATrapActor::Interact_Implementation(APlayerPawn* PlayerPawn)
 {
     if (IsActivated) return;
 
     UE_LOG(LogTemp, Warning, TEXT("TrapActivated"));
     IsActivated = true;
-    HasActivatedOnPlayer = false;
     GetWorld()->GetTimerManager().SetTimer(ActivationTimerHandle, this, &ATrapActor::ResetActivationState, ActivationCooldownSeconds, false);
 }
 
-void ATrapActor::OnMeshOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ATrapActor::OnMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    UE_LOG(LogTemp, Warning, TEXT("Trap mesh collided with %s"), *OtherActor->GetName());
+    if (!IsActivated) return;
+
+    if (TriggerOnlyOnPlayer)
+    {
+        if (APlayerPawn* Player = Cast<APlayerPawn>(OtherActor))
+        {
+            if (!TrapVictims.Contains(Player))
+            {
+                TrapVictims.Add(Player);
+                TrapEffect(Player);
+            }
+        }
+    }
+    else
+    {
+        if (ACharacter* Character = Cast<ACharacter>(OtherActor))
+        {
+            if (!TrapVictims.Contains(Character))
+            {
+                TrapVictims.Add(Character);
+                TrapEffect(Character);
+            }
+        }
+    }
 }
 
