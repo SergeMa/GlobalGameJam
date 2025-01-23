@@ -86,11 +86,12 @@ void APlayerPawn::Move(const FInputActionValue& Value)
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		AddMovementInput(ForwardDirection, MovementVector.Y);
 		// Alina: Player turns left/right with Yaw input, no safe normal for Movement vector is needed
 		AddControllerYawInput(MovementVector.X);
-		//AddMovementInput(RightDirection, MovementVector.X); // Alternative commented out -- no animations for this one
+		// Alternative commented out -- no animations for this one
+		//const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		//AddMovementInput(RightDirection, MovementVector.X);
 	}
 }
 
