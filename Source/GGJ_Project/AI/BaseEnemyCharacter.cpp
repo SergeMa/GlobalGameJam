@@ -47,7 +47,7 @@ void ABaseEnemyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 void ABaseEnemyCharacter::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
 	Health = FMath::Clamp(Health-Damage, 0, MaxHealth);
-	
+	UE_LOG(LogTemp, Error, TEXT("%i"), Health);
 	if (Health == 0) OnDeath();
 }
 
@@ -65,5 +65,5 @@ void ABaseEnemyCharacter::OnDeath()
 	}
 
 	AudioComponent->SetPaused(false);
-	SetLifeSpan(0);
+	Destroy();
 }
