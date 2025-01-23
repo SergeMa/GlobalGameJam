@@ -6,8 +6,9 @@
 #include "GameFramework/GameModeBase.h"
 #include "BubblesGameMode.generated.h"
 
-
 class APickup;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAnyPickupCollected);
 
 UCLASS()
 class GGJ_PROJECT_API ABubblesGameMode : public AGameModeBase
@@ -28,6 +29,8 @@ private:
 	int PlayerLevel;
 
 public:
+	UPROPERTY()
+	FOnAnyPickupCollected OnAnyPickupCollected;
 	
 	UPROPERTY(EditDefaultsOnly, Category = Level)
 	TSubclassOf<APickup> PickupType;

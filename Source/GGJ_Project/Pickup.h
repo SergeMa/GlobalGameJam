@@ -7,6 +7,8 @@
 #include "Interactible.h"
 #include "Pickup.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPickupEvent);
+
 UCLASS()
 class GGJ_PROJECT_API APickup : public AActor, public IInteractible 
 {
@@ -18,11 +20,19 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	
-public:	
+public:
+	int RandomBonus;
+	float BonusHealing = 20.f;
+	float BonusHealth = 10.f;
+	float BonusSpeed = 50.f;
+	
 	UFUNCTION()
-	void Interact_Implementation();
+	void Interact_Implementation(APlayerPawn* PlayerPawn);
 
-private:	
+	UFUNCTION()
+	void HandleAnyPickup();
+
+private:
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* PickupMesh;
 };

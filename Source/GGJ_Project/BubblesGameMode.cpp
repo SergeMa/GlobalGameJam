@@ -23,8 +23,8 @@ void ABubblesGameMode::AddPlayerExperience(const int& Experience, const FVector&
 	if (PlayerLevel < PlayerLevel + LevelUp)	
 	{
 		PlayerLevel = PlayerLevel + LevelUp;
-		SpawnPickup(BotDeathLocation);
-		SpawnPickup(FVector(BotDeathLocation.X + 100, BotDeathLocation.Y, BotDeathLocation.Z));
+		SpawnPickup(FVector(BotDeathLocation.X, BotDeathLocation.Y - 100, BotDeathLocation.Z));
+		SpawnPickup(FVector(BotDeathLocation.X, BotDeathLocation.Y + 100, BotDeathLocation.Z));
 	}
 }
 void ABubblesGameMode::SpawnPickup(const FVector& Location) const
