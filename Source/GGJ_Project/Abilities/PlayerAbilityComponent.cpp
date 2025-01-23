@@ -17,7 +17,4 @@ UPlayerAbilityComponent::UPlayerAbilityComponent()
 void UPlayerAbilityComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	MeleeStomp->UpgradeAbility();
-	RangedShot->UpgradeAbility();
 }

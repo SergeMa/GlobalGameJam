@@ -21,9 +21,13 @@ protected:
 	virtual void BeginPlay() override;
 	
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Bonuses)
 	int RandomBonus;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Bonuses)
 	float BonusHealing = 20.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Bonuses)
 	float BonusHealth = 10.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Bonuses)
 	float BonusSpeed = 50.f;
 	
 	UFUNCTION()
