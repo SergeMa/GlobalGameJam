@@ -2,9 +2,10 @@
 
 
 #include "GGJ_Project/AI/BaseEnemyCharacter.h"
+
+#include "Components/AudioComponent.h"
 #include "Components\CapsuleComponent.h"
 #include "GGJ_Project/PlayerPawn.h"
-#include "Engine/DamageEvents.h"
 #include "GGJ_Project/BubblesGameMode.h"
 
 // Sets default values
@@ -15,7 +16,10 @@ ABaseEnemyCharacter::ABaseEnemyCharacter()
 	GetCapsuleComponent()->InitCapsuleSize(50.f, 50.f);
 	Health = 100;
 	OnTakeAnyDamage.AddDynamic(this, &ABaseEnemyCharacter::HandleTakeAnyDamage);
-	
+
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
+	AudioComponent->SetSound(Sound);
+	AudioComponent->SetPaused(true);
 }
 
 // Called when the game starts or when spawned
@@ -59,6 +63,7 @@ void ABaseEnemyCharacter::OnDeath()
 	{
 		GameMode->AddPlayerExperience(Experience, GetActorLocation());
 	}
-	
-	Destroy();
+
+	AudioComponent->SetPaused(false);
+	SetLifeSpan(0);
 }

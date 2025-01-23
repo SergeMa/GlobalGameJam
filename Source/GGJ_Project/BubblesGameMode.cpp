@@ -19,12 +19,12 @@ void ABubblesGameMode::AddPlayerExperience(const int& Experience, const FVector&
 	UE_LOG(LogTemp, Display, TEXT("Experience gained: %d. Player level: %d"), Experience, PlayerLevel);
 	
 	PlayerExperience += Experience;
-	const int LevelUp = PlayerExperience / 100 - PlayerLevel;
+	const int LevelUp = PlayerExperience / 1000 - PlayerLevel;
 	if (PlayerLevel < PlayerLevel + LevelUp)	
 	{
 		PlayerLevel = PlayerLevel + LevelUp;
-		SpawnPickup(FVector(BotDeathLocation.X, BotDeathLocation.Y - 100, BotDeathLocation.Z));
-		SpawnPickup(FVector(BotDeathLocation.X, BotDeathLocation.Y + 100, BotDeathLocation.Z));
+		SpawnPickup(FVector(BotDeathLocation.X, BotDeathLocation.Y - 200, BotDeathLocation.Z));
+		SpawnPickup(FVector(BotDeathLocation.X, BotDeathLocation.Y + 200, BotDeathLocation.Z));
 	}
 }
 void ABubblesGameMode::SpawnPickup(const FVector& Location) const

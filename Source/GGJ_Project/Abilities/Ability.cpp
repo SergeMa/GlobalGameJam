@@ -20,7 +20,7 @@ void UAbility::UpgradeAbility()
 	Level += 1;
 	Damage *= DamageInc; 
 	Range += RangeInc;
-	Cooldown += CooldownInc;
+	Cooldown *= CooldownInc;
 	GetWorld()->GetTimerManager().SetTimer(CooldownTimer, this, &UAbility::UseAbility, Cooldown, true, false);
 }
 
