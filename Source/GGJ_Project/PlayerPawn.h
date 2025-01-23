@@ -56,8 +56,8 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float CurrentHealth = 100;
-	
-	UFUNCTION()
+
+	UFUNCTION(BlueprintCallable)
 	void HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
 private:
