@@ -10,17 +10,13 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "AI/BaseEnemyCharacter.h"
 #include "Interactible.h"
-#include "Abilities/MeleeStomp.h"
 #include "Abilities/PlayerAbilityComponent.h"
-#include "Abilities/RangedShot.h"
 
 APlayerPawn::APlayerPawn()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	RootComponent = GetRootComponent();
+	
 	GetCapsuleComponent()->InitCapsuleSize(50.f, 50.f);
-	GetCapsuleComponent()->SetupAttachment(RootComponent);
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	StaticMesh->SetupAttachment(GetCapsuleComponent());
 
