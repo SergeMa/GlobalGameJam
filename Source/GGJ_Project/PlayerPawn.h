@@ -22,9 +22,6 @@ class GGJ_PROJECT_API APlayerPawn : public ACharacter
 public:
 	APlayerPawn();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Mesh)
-	UStaticMeshComponent* StaticMesh;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera)
 	USpringArmComponent* SpringArm;
 
@@ -37,6 +34,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Input)
 	UInputAction* ActionMove;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Input)
+	UInputAction* ActionLook;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -44,6 +44,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Move(const FInputActionValue& Value);
+	virtual void Look(const FInputActionValue& Value);
 
 	UPROPERTY(EditAnywhere, Category = Abilities)
 	UPlayerAbilityComponent* Abilities;
