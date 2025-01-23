@@ -1,44 +1,24 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Ability_Swipe.h"
+#include "MeleeStomp.h"
 
 #include "Engine/DamageEvents.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 
-// Sets default values for this component's properties
-UAbility_Swipe::UAbility_Swipe()
+UMeleeStomp::UMeleeStomp()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-	
 }
 
-void UAbility_Swipe::BeginPlay()
+void UMeleeStomp::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-void UAbility_Swipe::AcquireAbility_Implementation()
-{
-	Level = 1;
-	Damage = 10;
-	Range = 200;
-	Cooldown = 3;
-
-	GetWorld()->GetTimerManager().SetTimer(CooldownTimer, this, &UAbility_Swipe::UseAbility_Implementation, Cooldown, true, false);
-}
-
-void UAbility_Swipe::UpgradeAbility_Implementation()
-{
-	Level += 1;
-	Damage += 10;
-	Range *= 1.1;
-	Cooldown *= 0.9;
-}
-
-void UAbility_Swipe::UseAbility_Implementation()
+void UMeleeStomp::UseAbility()
 {
 	FVector Location = GetOwner()->GetActorLocation();
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;

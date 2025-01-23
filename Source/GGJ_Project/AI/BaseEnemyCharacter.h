@@ -36,6 +36,9 @@ public:
 
 	int GetHealth() { return Health; }
 	void SetHealth(int Value) { Health = Value; }
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Experience)
+	int Experience = 10;
 	
 private:
 	int Health;

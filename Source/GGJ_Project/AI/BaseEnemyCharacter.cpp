@@ -5,6 +5,7 @@
 #include "Components\CapsuleComponent.h"
 #include "GGJ_Project/PlayerPawn.h"
 #include "Engine/DamageEvents.h"
+#include "GGJ_Project/BubblesGameMode.h"
 
 // Sets default values
 ABaseEnemyCharacter::ABaseEnemyCharacter()
@@ -41,13 +42,10 @@ void ABaseEnemyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 void ABaseEnemyCharacter::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-	FMath::Clamp(Health-Damage, 0, MaxHealth);
-
-	if (Health == 0)
-		Destroy();
+	Health = FMath::Clamp(Health-Damage, 0, MaxHealth);
+	
+	if (Health == 0) OnDeath();
 }
-
-
 
 
 void ABaseEnemyCharacter::Attack()
@@ -57,4 +55,10 @@ void ABaseEnemyCharacter::Attack()
 
 void ABaseEnemyCharacter::OnDeath()
 {
+	if (ABubblesGameMode* GameMode = GetWorld()->GetAuthGameMode<ABubblesGameMode>())
+	{
+		GameMode->AddPlayerExperience(Experience, GetActorLocation());
+	}
+	
+	Destroy();
 }

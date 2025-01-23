@@ -10,7 +10,9 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "AI/BaseEnemyCharacter.h"
 #include "Interactible.h"
+#include "Abilities/MeleeStomp.h"
 #include "Abilities/PlayerAbilityComponent.h"
+#include "Abilities/RangedShot.h"
 
 APlayerPawn::APlayerPawn()
 {
@@ -91,8 +93,8 @@ void APlayerPawn::Move(const FInputActionValue& Value)
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		AddMovementInput(ForwardDirection, MovementVector.Y);
-		AddMovementInput(RightDirection, MovementVector.X);
+		AddMovementInput(ForwardDirection, MovementVector.Y * SpeedMultiplier);
+		AddMovementInput(RightDirection, MovementVector.X * SpeedMultiplier);
 	}
 
 	if(GEngine)
@@ -103,14 +105,12 @@ void APlayerPawn::Move(const FInputActionValue& Value)
 
 void APlayerPawn::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-	CurrentHealth = FMath::Clamp(CurrentHealth-Damage, 0, MaxHealth);
+	CurrentHealth = FMath::Clamp(CurrentHealth - Damage, 0, MaxHealth);
 
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Red, FString::Printf(TEXT("Health: %d"), CurrentHealth));
+		GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Red, FString::Printf(TEXT("Health: %f"), CurrentHealth));
 	}
-	
-	
 }
 
 void APlayerPawn::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

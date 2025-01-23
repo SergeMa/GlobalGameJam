@@ -4,4 +4,29 @@
 #include "Ability.h"
 
 
-// Add default functionality here for any IAbility functions that are not pure virtual.
+UAbility::UAbility()
+{
+	PrimaryComponentTick.bCanEverTick = false;
+}
+
+
+void UAbility::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void UAbility::UpgradeAbility()
+{
+	Level += 1;
+	Damage *= DamageInc; 
+	Range += RangeInc;
+	Cooldown += CooldownInc;
+	GetWorld()->GetTimerManager().SetTimer(CooldownTimer, this, &UAbility::UseAbility, Cooldown, true, false);
+}
+
+void UAbility::UseAbility()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Ability is used! No definition."));
+}
+
+

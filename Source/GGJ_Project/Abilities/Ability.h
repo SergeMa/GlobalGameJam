@@ -3,35 +3,39 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/Interface.h"
+#include "Components/PrimitiveComponent.h"
 #include "Ability.generated.h"
 
-// This class does not need to be modified.
-UINTERFACE()
-class UAbility : public UInterface
-{
-	GENERATED_BODY()
-};
 
-/**
- * 
- */
-class GGJ_PROJECT_API IAbility
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+class GGJ_PROJECT_API UAbility : public UPrimitiveComponent
 {
 	GENERATED_BODY()
 
 public:
+	UAbility();
+
+protected:
+	virtual void BeginPlay() override;
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
 	int Level = 0;
-	float Damage = 0;
-	float Range = 0;
-	float Cooldown = 0.f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
+	float Damage = 10;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
+	float DamageInc = 1.5;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
+	float Range = 200;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
+	float RangeInc = 1.1;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
+	float Cooldown = 3;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
+	float CooldownInc = 0.9;
 
 	FTimerHandle CooldownTimer;
 	
-	UFUNCTION(BlueprintNativeEvent)
-	void AcquireAbility();
-	UFUNCTION(BlueprintNativeEvent)
-	void UpgradeAbility();
-	UFUNCTION(BlueprintNativeEvent)
-	void UseAbility();
+	virtual void UpgradeAbility();
+	virtual void UseAbility();
 };

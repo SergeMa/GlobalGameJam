@@ -3,19 +3,21 @@
 
 #include "PlayerAbilityComponent.h"
 
-#include "Ability_Swipe.h"
+#include "MeleeStomp.h"
+#include "RangedShot.h"
 
 UPlayerAbilityComponent::UPlayerAbilityComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 	
-	Ability_Swipe = CreateDefaultSubobject<UAbility_Swipe>(TEXT("Ability_Swipe"));
+	MeleeStomp = CreateDefaultSubobject<UMeleeStomp>(TEXT("MeleeStomp"));
+	RangedShot = CreateDefaultSubobject<URangedShot>(TEXT("RangedShot"));
 }
-
 
 void UPlayerAbilityComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Ability_Swipe->AcquireAbility_Implementation();
+	MeleeStomp->UpgradeAbility();
+	RangedShot->UpgradeAbility();
 }

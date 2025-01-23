@@ -6,14 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "PlayerAbilityComponent.generated.h"
 
-class IAbility;
-class UAbility_Swipe;
-
-enum EAbilityType
-{
-	Swipe,
-	Shoot
-};
+class URangedShot;
+class UMeleeStomp;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GGJ_PROJECT_API UPlayerAbilityComponent : public UActorComponent
@@ -26,7 +20,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	
-private:
-	UPROPERTY()
-	UAbility_Swipe* Ability_Swipe;
+public:
+	// Abilities
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UMeleeStomp* MeleeStomp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	URangedShot* RangedShot;
 };

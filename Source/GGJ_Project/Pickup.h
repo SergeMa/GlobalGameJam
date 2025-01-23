@@ -7,27 +7,22 @@
 #include "Interactible.h"
 #include "Pickup.generated.h"
 
-class UStaticMeshComponent;
-class UBoxComponent;
-
 UCLASS()
 class GGJ_PROJECT_API APickup : public AActor, public IInteractible 
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
+public:
 	APickup();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	
 public:	
 	UFUNCTION()
 	void Interact_Implementation();
 
-private:
+private:	
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* PickupMesh;
 };
