@@ -29,4 +29,8 @@ public:
 	UFUNCTION()
 	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 
+	virtual void Tick(float DeltaTime) override;
+
+	AActor* GetcurentActor();
+	
 };

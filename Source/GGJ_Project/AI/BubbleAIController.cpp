@@ -4,6 +4,8 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "GGJ_Project/PlayerPawn.h"
+#include "GGJ_Project/AI/BubbleAIBot/RangeAttackBot.h"
+
 
 
 ABubbleAIController::ABubbleAIController()
@@ -25,7 +27,27 @@ void ABubbleAIController::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus S
 
 	if (Actor->IsA<APlayerPawn>()) {
 		BB->SetValueAsObject("Character", Actor);
+		
 	}
+
+
+}
+
+void ABubbleAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	
+}
+
+AActor* ABubbleAIController::GetcurentActor()
+{
+	UBlackboardComponent* BB = GetBlackboardComponent();
+	AActor * CurrActor = Cast<AActor>(BB->GetValueAsObject("Character"));
+	if (!BB || !CurrActor)return nullptr;
+
+	return CurrActor;
+
+
 }
 
 
