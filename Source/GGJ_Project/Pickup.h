@@ -7,25 +7,30 @@
 #include "Interactible.h"
 #include "Pickup.generated.h"
 
-class UStaticMeshComponent;
-class UBoxComponent;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPickupEvent);
 
 UCLASS()
 class GGJ_PROJECT_API APickup : public AActor, public IInteractible 
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
+public:
 	APickup();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:	
+	
+public:
+	int RandomBonus;
+	float BonusHealing = 20.f;
+	float BonusHealth = 10.f;
+	float BonusSpeed = 50.f;
+	
 	UFUNCTION()
-	void Interact_Implementation();
+	void Interact_Implementation(APlayerPawn* PlayerPawn);
+
+	UFUNCTION()
+	void HandleAnyPickup();
 
 private:
 	UPROPERTY(EditDefaultsOnly)

@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BubblesGameMode.h"
 #include "GameFramework/Character.h"
 #include "PlayerPawn.generated.h"
 
+class UPlayerAbilityComponent;
 class UCameraComponent;
 class USpringArmComponent;
 struct FInputActionValue;
@@ -38,23 +40,29 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:
+public:	
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Move(const FInputActionValue& Value);
 
-	UPROPERTY(EditAnywhere)
-	int MaxHealth = 100;
+	UPROPERTY(EditAnywhere, Category = Abilities)
+	UPlayerAbilityComponent* Abilities;
 
 	UPROPERTY(EditAnywhere)
-	int CurrentHealth = 100;
+	int SpeedMultiplier = 1;
+	
+	UPROPERTY(EditAnywhere)
+	float MaxHealth = 100;
 
+	UPROPERTY(EditAnywhere)
+	float CurrentHealth = 100;
+	
 	UFUNCTION()
 	void HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
 private:
 	UFUNCTION()
-	void OnCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
 		int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 };

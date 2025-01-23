@@ -8,21 +8,21 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-
 #include "AI/BaseEnemyCharacter.h"
-#include "Engine/DamageEvents.h" 
 #include "Interactible.h"
-#include "Components\CapsuleComponent.h"
-
+#include "Abilities/MeleeStomp.h"
+#include "Abilities/PlayerAbilityComponent.h"
+#include "Abilities/RangedShot.h"
 
 APlayerPawn::APlayerPawn()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	GetCapsuleComponent()->InitCapsuleSize(50.f, 50.f);
 	RootComponent = GetRootComponent();
+	GetCapsuleComponent()->InitCapsuleSize(50.f, 50.f);
+	GetCapsuleComponent()->SetupAttachment(RootComponent);
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
-	StaticMesh->SetupAttachment(RootComponent);
+	StaticMesh->SetupAttachment(GetCapsuleComponent());
 
 	// Camera
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
@@ -43,6 +43,9 @@ APlayerPawn::APlayerPawn()
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
+
+	// Abilities
+	Abilities = CreateDefaultSubobject<UPlayerAbilityComponent>(TEXT("Abilities"));
 }
 
 void APlayerPawn::BeginPlay()
@@ -58,10 +61,9 @@ void APlayerPawn::BeginPlay()
 	}
 
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
-	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &APlayerPawn::OnCollisionOverlap);
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &APlayerPawn::OnBeginOverlap);
 
 	OnTakeAnyDamage.AddDynamic(this, &APlayerPawn::HandleTakeAnyDamage);
-
 }
 
 void APlayerPawn::Tick(float DeltaTime)
@@ -103,20 +105,18 @@ void APlayerPawn::Move(const FInputActionValue& Value)
 
 void APlayerPawn::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-	CurrentHealth = FMath::Clamp(CurrentHealth-10, 0, MaxHealth);
+	CurrentHealth = FMath::Clamp(CurrentHealth - Damage, 0, MaxHealth);
 
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Red, FString::Printf(TEXT("Health: %d"), CurrentHealth));
+		GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Red, FString::Printf(TEXT("Health: %f"), CurrentHealth));
 	}
-	
-	
 }
 
-void APlayerPawn::OnCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void APlayerPawn::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if(OtherActor->GetClass()->ImplementsInterface(UInteractible::StaticClass()))
 	{
-		IInteractible::Execute_Interact(OtherActor);
+		IInteractible::Execute_Interact(OtherActor, this);
 	}
 }
