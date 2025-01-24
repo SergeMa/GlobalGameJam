@@ -53,9 +53,11 @@ void AProjectile::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* Oth
 	UE_LOG(LogTemp, Error, TEXT("HitProjectile"));
 		APlayerPawn* Character = Cast<APlayerPawn>(OtherActor);
 		if (!Character)return;
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), Niagara,
-			OtherActor->GetActorLocation(), OtherActor->GetActorRotation());
 
+		if (Niagara) {
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), Niagara,
+				OtherActor->GetActorLocation(), OtherActor->GetActorRotation());
+		}
 		FDamageEvent DEvent;
 		OtherActor->TakeDamage(10, DEvent, Character->GetController(), this);
 	}
