@@ -7,6 +7,7 @@
 #include "Components\CapsuleComponent.h"
 #include "GGJ_Project/PlayerPawn.h"
 #include "GGJ_Project/BubblesGameMode.h"
+#include "GGJ_Project/AI/BubbleAIController.h"
 
 // Sets default values
 ABaseEnemyCharacter::ABaseEnemyCharacter()
@@ -20,6 +21,10 @@ ABaseEnemyCharacter::ABaseEnemyCharacter()
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
 	AudioComponent->SetSound(Sound);
 	AudioComponent->SetPaused(true);
+
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned; 
+	AIControllerClass = ABubbleAIController::StaticClass(); 
+	
 }
 
 // Called when the game starts or when spawned
