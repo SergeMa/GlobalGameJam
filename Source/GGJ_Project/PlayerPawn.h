@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "PlayerPawn.generated.h"
 
+class AProjectile;
 class UPlayerAbilityComponent;
 class UCameraComponent;
 class USpringArmComponent;
@@ -37,6 +38,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Input)
 	UInputAction* ActionLook;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Input)
+	UInputAction* ActionShoot;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -45,6 +49,15 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Move(const FInputActionValue& Value);
 	virtual void Look(const FInputActionValue& Value);
+
+	// Gunplay
+	virtual void Shoot(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintCallable, Category = Gunplay)
+	virtual void OnTriggerPulled();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Gunplay)
+	TSubclassOf<AProjectile> ProjectileClass;
 
 	UPROPERTY(EditAnywhere, Category = Abilities)
 	UPlayerAbilityComponent* Abilities;

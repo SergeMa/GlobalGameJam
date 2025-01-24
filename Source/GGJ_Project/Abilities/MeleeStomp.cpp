@@ -32,7 +32,7 @@ void UMeleeStomp::UseAbility()
 		ObjectTypes,
 		false,
 		{},
-		EDrawDebugTrace::ForOneFrame,
+		EDrawDebugTrace::ForDuration,
 		Hits,
 		true);
 
@@ -43,4 +43,12 @@ void UMeleeStomp::UseAbility()
 
 		UE_LOG(LogTemp, Display, TEXT("Actor was hit for %f damage!"), Damage);
 	}
+}
+
+void UMeleeStomp::UpgradeAbility()
+{
+	Super::UpgradeAbility();
+	Range += RangeInc;
+	Cooldown -= CooldownInc;
+	GetWorld()->GetTimerManager().SetTimer(CooldownTimer, this, &UAbility::UseAbility, Cooldown, true, false);
 }

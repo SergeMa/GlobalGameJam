@@ -11,6 +11,7 @@
 #include "AI/BaseEnemyCharacter.h"
 #include "Interactible.h"
 #include "Abilities/PlayerAbilityComponent.h"
+#include "Abilities/RangedShot.h"
 
 APlayerPawn::APlayerPawn()
 {
@@ -70,9 +71,9 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		// Move
 		EnhancedInputComponent->BindAction(ActionMove, ETriggerEvent::Triggered, this, &APlayerPawn::Move);
 		EnhancedInputComponent->BindAction(ActionLook, ETriggerEvent::Triggered, this, &APlayerPawn::Look);
+		EnhancedInputComponent->BindAction(ActionShoot, ETriggerEvent::Triggered, this, &APlayerPawn::Shoot);
 	}
 }
 
@@ -104,6 +105,16 @@ void APlayerPawn::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void APlayerPawn::Shoot(const FInputActionValue& Value)
+{
+	Abilities->RangedShot->UseAbility();
+}
+
+void APlayerPawn::OnTriggerPulled()
+{
+	Abilities->RangedShot->OnTriggerPulled();
 }
 
 void APlayerPawn::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)

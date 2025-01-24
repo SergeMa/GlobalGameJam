@@ -22,19 +22,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
 	int Level = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
-	float Damage = 10;
+	float Damage = 10.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
-	float DamageInc = 1.5;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
-	float Range = 200;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
-	float RangeInc = 1.1;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
-	float Cooldown = 3;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
-	float CooldownInc = 0.9;
-
-	FTimerHandle CooldownTimer;
+	float DamageInc = 10.f;
 	
 	virtual void UpgradeAbility();
 	virtual void UseAbility();
