@@ -18,15 +18,8 @@ void UAbility::BeginPlay()
 void UAbility::UpgradeAbility()
 {
 	Level += 1;
-	Damage *= DamageInc; 
-	Range += RangeInc;
-	Cooldown *= CooldownInc;
-	GetWorld()->GetTimerManager().SetTimer(CooldownTimer, this, &UAbility::UseAbility, Cooldown, true, false);
+	Damage += DamageInc;
 }
 
-void UAbility::UseAbility()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Ability is used! No definition."));
-}
-
+void UAbility::UseAbility() {}
 

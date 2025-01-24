@@ -15,9 +15,21 @@ class GGJ_PROJECT_API UMeleeStomp : public UAbility
 public:
 	UMeleeStomp();
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
+	float Range = 200.f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
+	float RangeInc = 50.f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
+	float Cooldown = 20.f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
+	float CooldownInc = 5.f;
+
+	FTimerHandle CooldownTimer;
+
 protected:
 	virtual void BeginPlay() override;
 
 public:
 	virtual void UseAbility() override;
+	virtual void UpgradeAbility() override;
 };

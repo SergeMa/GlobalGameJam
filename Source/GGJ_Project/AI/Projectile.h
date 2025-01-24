@@ -37,8 +37,8 @@ public:
 	 UNiagaraSystem* Niagara;
 
 	 UFUNCTION()
-	 void OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
+	 virtual void OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
 		 const FHitResult& Hit);
 
-	 void SetInitialVelocity(FVector& LaunchVelocity);
+	 virtual void SetInitialVelocity(FVector& LaunchVelocity);
 };

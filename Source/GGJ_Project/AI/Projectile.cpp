@@ -11,7 +11,6 @@
 
 AProjectile::AProjectile()
 {
- 	
 	PrimaryActorTick.bCanEverTick = true;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
@@ -26,11 +25,6 @@ AProjectile::AProjectile()
 	ProjectileMovement->MaxSpeed = 3000;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->ProjectileGravityScale = 0.0f;
-
-
-
-
-
 }
 
 
