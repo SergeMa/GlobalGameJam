@@ -4,10 +4,14 @@
 #include "GGJ_Project/AI/BaseEnemyCharacter.h"
 
 #include "Components/AudioComponent.h"
-#include "Components\CapsuleComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GGJ_Project/PlayerPawn.h"
 #include "GGJ_Project/BubblesGameMode.h"
 #include "GGJ_Project/AI/BubbleAIController.h"
+#include "Kismet/GameplayStatics.h"
+#include "NiagaraFunctionLibrary.h"
+#include "Sound/SoundBase.h"
+
 
 // Sets default values
 ABaseEnemyCharacter::ABaseEnemyCharacter()
@@ -19,7 +23,7 @@ ABaseEnemyCharacter::ABaseEnemyCharacter()
 	OnTakeAnyDamage.AddDynamic(this, &ABaseEnemyCharacter::HandleTakeAnyDamage);
 
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
-	AudioComponent->SetSound(Sound);
+	AudioComponent->SetSound(SoundDeath);
 	AudioComponent->SetPaused(true);
 
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned; 
@@ -64,11 +68,17 @@ void ABaseEnemyCharacter::Attack()
 
 void ABaseEnemyCharacter::OnDeath()
 {
+	
 	if (ABubblesGameMode* GameMode = GetWorld()->GetAuthGameMode<ABubblesGameMode>())
 	{
 		GameMode->AddPlayerExperience(Experience, GetActorLocation());
 	}
 
 	AudioComponent->SetPaused(false);
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), Niagara,
+	GetActorLocation(), GetActorRotation());
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SoundDeath, GetActorLocation());
 	Destroy();
+	UE_LOG(LogTemp, Error, TEXT("OnDeth"));
+
 }

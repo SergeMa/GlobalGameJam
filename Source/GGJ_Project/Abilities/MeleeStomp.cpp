@@ -39,8 +39,9 @@ void UMeleeStomp::UseAbility()
 	for(FHitResult Hit : Hits)
 	{
 		FDamageEvent DamageEvent;
-		Hit.GetActor()->TakeDamage(Damage, DamageEvent, GetWorld()->GetFirstPlayerController(), GetOwner());
-
+		if (Hit.GetActor()) {
+			Hit.GetActor()->TakeDamage(Damage, DamageEvent, GetWorld()->GetFirstPlayerController(), GetOwner());
+		}
 		UE_LOG(LogTemp, Display, TEXT("Actor was hit for %f damage!"), Damage);
 	}
 }

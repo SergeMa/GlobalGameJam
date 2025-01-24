@@ -5,6 +5,7 @@
 #include "Components\CapsuleComponent.h"
 #include "GGJ_Project/PlayerPawn.h"
 #include "Engine/DamageEvents.h"
+#include "Animation/AnimMontage.h"
 
 AMeleeAttackBot::AMeleeAttackBot()
 {
@@ -23,7 +24,7 @@ void AMeleeAttackBot::OnCollisionOverlap(UPrimitiveComponent* OverlappedComponen
 		FTimerDelegate TimerDel;
 		TimerDel.BindUFunction(this, FName("MeeleAttack"), OtherActor);
 
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDel, 0.3, true);
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDel, 0.9, true);
 
 	}
 }
@@ -35,6 +36,9 @@ void AMeleeAttackBot::OnCollisionEndOverlap(UPrimitiveComponent* OverlappedCompo
 }
 void AMeleeAttackBot::MeeleAttack(AActor* Actor)
 {
+	GetActorLocation()=  GetActorForwardVector() * 1000;
+	PlayAnimMontage(AnimMontage);
 	FDamageEvent DEvent;
 	Actor->TakeDamage(10, DEvent, Controller, this);
+
 }

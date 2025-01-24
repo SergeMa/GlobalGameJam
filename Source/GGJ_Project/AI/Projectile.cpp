@@ -6,6 +6,8 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "GGJ_Project/PlayerPawn.h"
 #include "Engine/DamageEvents.h"
+#include "Kismet/GameplayStatics.h"
+#include "NiagaraFunctionLibrary.h"
 
 AProjectile::AProjectile()
 {
@@ -45,6 +47,11 @@ void AProjectile::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* Oth
 	UE_LOG(LogTemp, Error, TEXT("HitProjectile"));
 		APlayerPawn* Character = Cast<APlayerPawn>(OtherActor);
 		if (!Character)return;
+
+		if (Niagara) {
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), Niagara,
+				OtherActor->GetActorLocation(), OtherActor->GetActorRotation());
+		}
 		FDamageEvent DEvent;
 		OtherActor->TakeDamage(10, DEvent, Character->GetController(), this);
 	}

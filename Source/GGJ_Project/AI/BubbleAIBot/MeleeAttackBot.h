@@ -6,9 +6,7 @@
 #include "GGJ_Project/AI/BaseEnemyCharacter.h"
 #include "MeleeAttackBot.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class GGJ_PROJECT_API AMeleeAttackBot : public ABaseEnemyCharacter
 {
@@ -16,6 +14,9 @@ class GGJ_PROJECT_API AMeleeAttackBot : public ABaseEnemyCharacter
 
 public:
 	AMeleeAttackBot();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UAnimMontage* AnimMontage;
 
 	UFUNCTION()
 	void MeeleAttack(AActor* Actor);

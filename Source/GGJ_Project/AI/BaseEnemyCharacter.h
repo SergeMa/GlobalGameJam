@@ -43,12 +43,15 @@ public:
 	UAudioComponent* AudioComponent;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
-	USoundWave* Sound;
-	
+	USoundWave* SoundDeath;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
+	USoundWave* AttackSound;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Experience)
 	int Experience = 10;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Experience)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Niagara)
 	UNiagaraSystem* Niagara;
 
 	
