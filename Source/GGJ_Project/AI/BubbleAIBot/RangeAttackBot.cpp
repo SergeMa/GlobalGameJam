@@ -5,6 +5,8 @@
 #include "GGJ_Project/AI/BubbleAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GGJ_Project/AI/Projectile.h"
+#include "Sound/SoundBase.h"
+#include "Kismet/GameplayStatics.h"
 
 ARangeAttackBot::ARangeAttackBot()
 {
@@ -71,6 +73,7 @@ void ARangeAttackBot::StopAttack()
 
 void ARangeAttackBot::RangeAttack(AActor* Actor)
 {
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), AttackSound, GetActorLocation());
 	FVector Location = GetActorLocation(); 
 	FVector ForwardVector = GetActorForwardVector(); 
 	FVector Offset = ForwardVector * 100.0f; 

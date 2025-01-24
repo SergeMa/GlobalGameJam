@@ -8,6 +8,8 @@
 
 class UStaticMeshComponent;
 class UProjectileMovementComponent;
+class UNiagaraSystem;
+
 UCLASS()
 class GGJ_PROJECT_API AProjectile : public AActor
 {
@@ -30,6 +32,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	 UProjectileMovementComponent* ProjectileMovement;
+
+	 UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Niagara)
+	 UNiagaraSystem* Niagara;
 
 	 UFUNCTION()
 	 void OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
