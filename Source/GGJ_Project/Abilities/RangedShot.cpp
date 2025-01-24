@@ -28,14 +28,6 @@ void URangedShot::UseAbility()
 {
 	if (bIsShooting)
 	{
-<<<<<<< HEAD
-		
-=======
-FDamageEvent DamageEvent;
-if (Hit.GetActor()) {
-	Hit.GetActor()->TakeDamage(Damage, DamageEvent, GetWorld()->GetFirstPlayerController(), GetOwner());
-}
-UE_LOG(LogTemp, Display, TEXT("Actor was hit for %f damage!"), Damage);
 		// Don't start new shot until animation ends
 		UE_LOG(LogTemp, Verbose, TEXT("Ranged Shot on cooldown"));	
 	}
@@ -55,7 +47,7 @@ UE_LOG(LogTemp, Display, TEXT("Actor was hit for %f damage!"), Damage);
 	if(GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Ranged Shot used"));
->>>>>>> main
+
 	}
 }
 
