@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "BaseEnemyCharacter.generated.h"
 
+class UNiagaraSystem;
+
 UCLASS()
 class GGJ_PROJECT_API ABaseEnemyCharacter : public ACharacter
 {
@@ -45,6 +47,10 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Experience)
 	int Experience = 10;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Experience)
+	UNiagaraSystem* Niagara;
+
 	
 private:
 	int Health;
