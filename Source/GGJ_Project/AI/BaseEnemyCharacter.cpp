@@ -71,7 +71,7 @@ void ABaseEnemyCharacter::OnDeath()
 	
 	if (ABubblesGameMode* GameMode = GetWorld()->GetAuthGameMode<ABubblesGameMode>())
 	{
-		GameMode->AddPlayerExperience(Experience, GetActorLocation());
+		GameMode->AddPlayerExperience(Experience);
 	}
 
 	AudioComponent->SetPaused(false);

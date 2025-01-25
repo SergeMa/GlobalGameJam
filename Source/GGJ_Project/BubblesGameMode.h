@@ -9,6 +9,7 @@
 class APickup;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAnyPickupCollected);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTimeToSpawnPickups);
 
 UCLASS()
 class GGJ_PROJECT_API ABubblesGameMode : public AGameModeBase
@@ -17,6 +18,9 @@ class GGJ_PROJECT_API ABubblesGameMode : public AGameModeBase
 	
 public:
 	ABubblesGameMode();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
+	UAudioComponent* AudioComp;
 	
 private:
 	UPROPERTY(EditAnywhere, Category = Difficulty)
@@ -28,18 +32,19 @@ private:
 	UPROPERTY(EditAnywhere, Category = Difficulty)
 	int PlayerLevel;
 
+	// TODO: delete later, test timer
+	FTimerHandle TimerHandle;
+
 public:
 	UPROPERTY()
 	FOnAnyPickupCollected OnAnyPickupCollected;
-	
-	UPROPERTY(EditDefaultsOnly, Category = Level)
-	TSubclassOf<APickup> PickupType;
+
+	UPROPERTY()
+	FOnTimeToSpawnPickups OnTimeToSpawnPickups;
 	
 	int GetDifficultyLevel() const;
 	void IncrementDifficultyLevel();
 
-	int GetPlayerLevel() const;
-	void AddPlayerExperience(const int& Experience, const FVector& BotDeathLocation);
-	
-	void SpawnPickup(const FVector& Location) const;
+	void GetPlayerLevel();
+	void AddPlayerExperience(const int& Experience);
 };

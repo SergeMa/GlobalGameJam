@@ -22,9 +22,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY()
-	APlayerPawn* Player;
-
 public:
 	virtual void UseAbility() override;
 

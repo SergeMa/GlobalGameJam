@@ -3,6 +3,9 @@
 
 #include "Ability.h"
 
+#include "Components/AudioComponent.h"
+#include "GGJ_Project/PlayerPawn.h"
+
 
 UAbility::UAbility()
 {
@@ -13,6 +16,7 @@ UAbility::UAbility()
 void UAbility::BeginPlay()
 {
 	Super::BeginPlay();
+	Player = Cast<APlayerPawn>(GetOwner());
 }
 
 void UAbility::UpgradeAbility()

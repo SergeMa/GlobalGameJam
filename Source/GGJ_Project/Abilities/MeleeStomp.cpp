@@ -3,24 +3,33 @@
 
 #include "MeleeStomp.h"
 
+#include "NiagaraFunctionLibrary.h"
 #include "Engine/DamageEvents.h"
+#include "GGJ_Project/PlayerPawn.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "NiagaraComponent.h"
+#include "Components/AudioComponent.h"
 
 
 UMeleeStomp::UMeleeStomp()
 {
 	PrimaryComponentTick.bCanEverTick = false;
+	Audio = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
 }
 
 void UMeleeStomp::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	Audio->SetSound(SoundStomp);
+	Audio->SetPaused(true);
 }
 
 void UMeleeStomp::UseAbility()
 {
-	FVector Location = GetOwner()->GetActorLocation();
+	Audio->Play(0);
+	
+	FVector Location = Player->GetActorLocation();
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
 	TArray<FHitResult> Hits;
@@ -32,7 +41,7 @@ void UMeleeStomp::UseAbility()
 		ObjectTypes,
 		false,
 		{},
-		EDrawDebugTrace::ForDuration,
+		EDrawDebugTrace::None,
 		Hits,
 		true);
 
@@ -44,6 +53,12 @@ void UMeleeStomp::UseAbility()
 		}
 		UE_LOG(LogTemp, Display, TEXT("Actor was hit for %f damage!"), Damage);
 	}
+	SpawnSFX = UNiagaraFunctionLibrary::SpawnSystemAttached(Niagara, this, NAME_None, Player->GetActorLocation(), Player->GetActorRotation(), EAttachLocation::Type::KeepRelativeOffset, true);
+	if(SpawnSFX)
+	{
+		SpawnSFX->SetVariableFloat(FName(TEXT("SFX_Range")), Range);
+	}
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SoundStomp, Player->GetActorLocation());
 }
 
 void UMeleeStomp::UpgradeAbility()
@@ -52,4 +67,9 @@ void UMeleeStomp::UpgradeAbility()
 	Range += RangeInc;
 	Cooldown -= CooldownInc;
 	GetWorld()->GetTimerManager().SetTimer(CooldownTimer, this, &UAbility::UseAbility, Cooldown, true, false);
+
+	if(GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Melee ability upgrade!"));
+	}
 }

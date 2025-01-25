@@ -7,6 +7,9 @@
 #include "MeleeStomp.generated.h"
 
 
+class UNiagaraComponent;
+class UNiagaraSystem;
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GGJ_PROJECT_API UMeleeStomp : public UAbility
 {
@@ -25,6 +28,19 @@ public:
 	float CooldownInc = 5.f;
 
 	FTimerHandle CooldownTimer;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Niagara)
+	UNiagaraSystem* Niagara;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Niagara)
+	UNiagaraComponent* SpawnSFX;
+
+	
+	UPROPERTY(EditAnywhere)
+	UAudioComponent* Audio;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
+	USoundWave* SoundStomp;
 
 protected:
 	virtual void BeginPlay() override;
