@@ -49,8 +49,6 @@ public:
 	
 	int GetDifficultyLevel() const;
 	void IncrementDifficultyLevel();
-	
-	void GetPlayerLevel();
 	void AddPlayerExperience(const int& Experience);
 
 	virtual void StartPlay();

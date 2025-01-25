@@ -15,8 +15,6 @@ int ABubblesGameMode::GetDifficultyLevel() const { return DifficultyLevel; }
 
 void ABubblesGameMode::IncrementDifficultyLevel() { DifficultyLevel++; }
 
-void ABubblesGameMode::GetPlayerLevel() { AddPlayerExperience(10); }
-
 void ABubblesGameMode::AddPlayerExperience(const int& Experience)
 {
 
@@ -30,8 +28,6 @@ void ABubblesGameMode::AddPlayerExperience(const int& Experience)
 		OnTimeToSpawnPickups.Broadcast();
 		UE_LOG(LogTemp, Display, TEXT("OnTimeToSpawnPickups.Broadcast()"));
 	}
-
-	GetWorldTimerManager().SetTimer(TimerHandle, this, &ABubblesGameMode::GetPlayerLevel, 0.5f, true, false);
 }
 
 void ABubblesGameMode::StartPlay()
