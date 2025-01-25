@@ -7,6 +7,7 @@
 #include "BubblesGameMode.generated.h"
 
 class APickup;
+class USoundBase;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAnyPickupCollected);
 
@@ -29,6 +30,10 @@ private:
 	int PlayerLevel;
 
 public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+	USoundBase* MainSoundtrack;
+
 	UPROPERTY()
 	FOnAnyPickupCollected OnAnyPickupCollected;
 	
@@ -42,4 +47,6 @@ public:
 	void AddPlayerExperience(const int& Experience, const FVector& BotDeathLocation);
 	
 	void SpawnPickup(const FVector& Location) const;
+
+	virtual void StartPlay();
 };

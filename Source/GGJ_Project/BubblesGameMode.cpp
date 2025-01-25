@@ -4,6 +4,8 @@
 #include "BubblesGameMode.h"
 
 #include "Pickup.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
 
 ABubblesGameMode::ABubblesGameMode() : DifficultyLevel(0), PlayerExperience(0), PlayerLevel(0) {}
 
@@ -47,4 +49,10 @@ void ABubblesGameMode::SpawnPickup(const FVector& Location) const
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Pickup type is not selected."));
 	}
+}
+
+void ABubblesGameMode::StartPlay()
+{
+	Super::StartPlay();
+	UGameplayStatics::PlaySound2D(GetWorld(), MainSoundtrack, 1.0f);
 }
