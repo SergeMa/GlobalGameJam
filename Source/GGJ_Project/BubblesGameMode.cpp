@@ -4,6 +4,7 @@
 #include "BubblesGameMode.h"
 
 #include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 ABubblesGameMode::ABubblesGameMode() : DifficultyLevel(0), PlayerExperience(0), PlayerLevel(0)
 {
@@ -30,4 +31,10 @@ void ABubblesGameMode::AddPlayerExperience(const int& Experience)
 	}
 
 	GetWorldTimerManager().SetTimer(TimerHandle, this, &ABubblesGameMode::GetPlayerLevel, 0.5f, true, false);
+}
+
+void ABubblesGameMode::StartPlay()
+{
+	Super::StartPlay();
+	UGameplayStatics::PlaySound2D(GetWorld(), MainSoundtrack, 1.0f);
 }

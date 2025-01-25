@@ -7,6 +7,7 @@
 #include "BubblesGameMode.generated.h"
 
 class APickup;
+class USoundBase;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAnyPickupCollected);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTimeToSpawnPickups);
@@ -36,6 +37,10 @@ private:
 	FTimerHandle TimerHandle;
 
 public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+	USoundBase* MainSoundtrack;
+
 	UPROPERTY()
 	FOnAnyPickupCollected OnAnyPickupCollected;
 
@@ -44,7 +49,9 @@ public:
 	
 	int GetDifficultyLevel() const;
 	void IncrementDifficultyLevel();
-
+	
 	void GetPlayerLevel();
 	void AddPlayerExperience(const int& Experience);
+
+	virtual void StartPlay();
 };
