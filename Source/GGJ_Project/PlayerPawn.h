@@ -71,6 +71,10 @@ public:
 	UPROPERTY(EditAnywhere)
 	float CurrentHealth = 100;
 
+	FTimerHandle BoostSpeedTimer;
+	void BoostSpeed(float BoostTimer);
+	void ResetSpeed();
+
 	UFUNCTION(BlueprintCallable)
 	void HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 

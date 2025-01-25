@@ -7,6 +7,8 @@
 #include "Ability.generated.h"
 
 
+class APlayerPawn;
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GGJ_PROJECT_API UAbility : public UPrimitiveComponent
 {
@@ -15,6 +17,9 @@ class GGJ_PROJECT_API UAbility : public UPrimitiveComponent
 public:
 	UAbility();
 
+	UPROPERTY()
+	APlayerPawn* Player;
+	
 protected:
 	virtual void BeginPlay() override;
 

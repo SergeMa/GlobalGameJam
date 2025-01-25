@@ -3,19 +3,21 @@
 
 #include "BubblesGameMode.h"
 
-#include "Pickup.h"
-#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
 
-ABubblesGameMode::ABubblesGameMode() : DifficultyLevel(0), PlayerExperience(0), PlayerLevel(0) {}
+ABubblesGameMode::ABubblesGameMode() : DifficultyLevel(0), PlayerExperience(0), PlayerLevel(0)
+{
+	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
+}
 
 int ABubblesGameMode::GetDifficultyLevel() const { return DifficultyLevel; }
 
 void ABubblesGameMode::IncrementDifficultyLevel() { DifficultyLevel++; }
 
-int ABubblesGameMode::GetPlayerLevel() const { return PlayerExperience % 100; }
+void ABubblesGameMode::GetPlayerLevel() { AddPlayerExperience(10); }
 
-void ABubblesGameMode::AddPlayerExperience(const int& Experience, const FVector& BotDeathLocation)
+void ABubblesGameMode::AddPlayerExperience(const int& Experience)
 {
 
 	UE_LOG(LogTemp, Display, TEXT("Experience gained: %d. Player level: %d"), Experience, PlayerLevel);
@@ -25,30 +27,10 @@ void ABubblesGameMode::AddPlayerExperience(const int& Experience, const FVector&
 	if (PlayerLevel < PlayerLevel + LevelUp)	
 	{
 		PlayerLevel = PlayerLevel + LevelUp;
-		SpawnPickup(FVector(BotDeathLocation.X, BotDeathLocation.Y - 200, BotDeathLocation.Z));
-		SpawnPickup(FVector(BotDeathLocation.X, BotDeathLocation.Y + 200, BotDeathLocation.Z));
+		OnTimeToSpawnPickups.Broadcast();
 	}
-}
-void ABubblesGameMode::SpawnPickup(const FVector& Location) const
-{
-	if (PickupType != nullptr)
-	{
-		FActorSpawnParameters SpawnParameters;
-		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		AActor* PickupSpawn = GetWorld()->SpawnActor<AActor>(PickupType, Location, FRotator::ZeroRotator, SpawnParameters);
-		if (PickupSpawn)
-		{
-			UE_LOG(LogTemp, Verbose, TEXT("Pickup spawned."));
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Failed to spawn a pickup."));
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Pickup type is not selected."));
-	}
+
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &ABubblesGameMode::GetPlayerLevel, 0.5f, true, false);
 }
 
 void ABubblesGameMode::StartPlay()

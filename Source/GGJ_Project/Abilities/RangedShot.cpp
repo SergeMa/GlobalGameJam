@@ -4,6 +4,7 @@
 #include "RangedShot.h"
 
 #include "Bullet.h"
+#include "Components/AudioComponent.h"
 #include "Engine/DamageEvents.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -20,7 +21,6 @@ URangedShot::URangedShot() : bIsShooting(false)
 void URangedShot::BeginPlay()
 {
 	Super::BeginPlay();
-	Player = Cast<APlayerPawn>(GetOwner());
 }
 
 

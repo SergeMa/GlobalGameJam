@@ -12,6 +12,7 @@
 #include "Interactible.h"
 #include "Abilities/PlayerAbilityComponent.h"
 #include "Abilities/RangedShot.h"
+#include "Math/UnitConversion.h"
 
 APlayerPawn::APlayerPawn()
 {
@@ -87,7 +88,7 @@ void APlayerPawn::Move(const FInputActionValue& Value)
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-		AddMovementInput(ForwardDirection, MovementVector.Y);
+		AddMovementInput(ForwardDirection, MovementVector.Y * SpeedMultiplier);
 		// Alina: Player turns left/right with Yaw input, no safe normal for Movement vector is needed
 		AddControllerYawInput(MovementVector.X);
 		// Alternative commented out -- no animations for this one
@@ -115,6 +116,23 @@ void APlayerPawn::Shoot(const FInputActionValue& Value)
 void APlayerPawn::OnTriggerPulled()
 {
 	Abilities->RangedShot->OnTriggerPulled();
+}
+
+void APlayerPawn::BoostSpeed(float BoostTimer)
+{
+	SpeedMultiplier = 2;
+	GetCharacterMovement()->MaxWalkSpeed = 1200;
+	GetWorldTimerManager().SetTimer(BoostSpeedTimer, this, &APlayerPawn::ResetSpeed, BoostTimer, false);
+	if(GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Speed Boosted: %g"), GetCharacterMovement()->MaxWalkSpeed));
+	}
+}
+
+void APlayerPawn::ResetSpeed()
+{
+	SpeedMultiplier = 1;
+	GetCharacterMovement()->MaxWalkSpeed = 600;
 }
 
 void APlayerPawn::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
