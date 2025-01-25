@@ -42,10 +42,10 @@ public:
 	USoundBase* MainSoundtrack;
 
 	UPROPERTY()
-	FOnAnyPickupCollected OnAnyPickupCollected;
+	FOnTimeToSpawnPickups OnTimeToSpawnPickups;
 
 	UPROPERTY()
-	FOnTimeToSpawnPickups OnTimeToSpawnPickups;
+	FOnAnyPickupCollected OnAnyPickupCollected;
 	
 	int GetDifficultyLevel() const;
 	void IncrementDifficultyLevel();

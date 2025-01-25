@@ -26,8 +26,9 @@ void ABubblesGameMode::AddPlayerExperience(const int& Experience)
 	const int LevelUp = PlayerExperience / 1000 - PlayerLevel;
 	if (PlayerLevel < PlayerLevel + LevelUp)	
 	{
-		PlayerLevel = PlayerLevel + LevelUp;
+		PlayerLevel += LevelUp;
 		OnTimeToSpawnPickups.Broadcast();
+		UE_LOG(LogTemp, Display, TEXT("OnTimeToSpawnPickups.Broadcast()"));
 	}
 
 	GetWorldTimerManager().SetTimer(TimerHandle, this, &ABubblesGameMode::GetPlayerLevel, 0.5f, true, false);
