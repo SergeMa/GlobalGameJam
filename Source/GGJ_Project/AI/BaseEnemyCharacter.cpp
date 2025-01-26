@@ -55,6 +55,11 @@ void ABaseEnemyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 void ABaseEnemyCharacter::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Owner = this;
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	AActor* DmgSpawn = GetWorld()->SpawnActor<AActor>(DmgTextActorClass, GetActorLocation(), GetActorRotation(), SpawnParameters);
+	
 	Health = FMath::Clamp(Health-Damage, 0, MaxHealth);
 	UE_LOG(LogTemp, Error, TEXT("%i"), Health);
 	if (Health == 0) OnDeath();
