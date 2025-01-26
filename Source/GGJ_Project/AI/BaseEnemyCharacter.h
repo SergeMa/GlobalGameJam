@@ -49,7 +49,7 @@ public:
 	USoundWave* AttackSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Experience)
-	int Experience = 10;
+	int Experience = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Niagara)
 	UNiagaraSystem* Niagara;

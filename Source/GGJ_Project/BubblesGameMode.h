@@ -22,7 +22,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
 	UAudioComponent* AudioComp;
-	
+
 private:
 	UPROPERTY(EditAnywhere, Category = Difficulty)
 	int DifficultyLevel;
@@ -31,15 +31,18 @@ private:
 	int PlayerExperience;
 
 	UPROPERTY(EditAnywhere, Category = Difficulty)
-	int PlayerLevel;
+	int RequiredExperience = 1;
 
-	// TODO: delete later, test timer
-	FTimerHandle TimerHandle;
+	UPROPERTY(EditAnywhere, Category = Difficulty)
+	int PlayerLevel;
 
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
 	USoundBase* MainSoundtrack;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
+	USoundWave* SoundLevelUp;
 
 	UPROPERTY()
 	FOnTimeToSpawnPickups OnTimeToSpawnPickups;
@@ -50,6 +53,7 @@ public:
 	int GetDifficultyLevel() const;
 	void IncrementDifficultyLevel();
 	void AddPlayerExperience(const int& Experience);
+	void LevelUpPlayer();
 
 	virtual void StartPlay();
 };

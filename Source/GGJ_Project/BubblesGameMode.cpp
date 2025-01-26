@@ -21,13 +21,19 @@ void ABubblesGameMode::AddPlayerExperience(const int& Experience)
 	UE_LOG(LogTemp, Display, TEXT("Experience gained: %d. Player level: %d"), Experience, PlayerLevel);
 	
 	PlayerExperience += Experience;
-	const int LevelUp = PlayerExperience / 1000 - PlayerLevel;
-	if (PlayerLevel < PlayerLevel + LevelUp)	
-	{
-		PlayerLevel += LevelUp;
-		OnTimeToSpawnPickups.Broadcast();
-		UE_LOG(LogTemp, Display, TEXT("OnTimeToSpawnPickups.Broadcast()"));
-	}
+	if (PlayerExperience >= RequiredExperience)
+		LevelUpPlayer();
+}
+
+void ABubblesGameMode::LevelUpPlayer()
+{
+	PlayerLevel++;
+	RequiredExperience = FMath::Square(PlayerLevel)+FMath::Square(PlayerLevel+1);
+	PlayerExperience = 0;
+	IncrementDifficultyLevel();
+	UGameplayStatics::PlaySound2D(GetWorld(), SoundLevelUp, 1.0f);
+	OnTimeToSpawnPickups.Broadcast();
+	UE_LOG(LogTemp, Display, TEXT("OnTimeToSpawnPickups.Broadcast()"));
 }
 
 void ABubblesGameMode::StartPlay()
