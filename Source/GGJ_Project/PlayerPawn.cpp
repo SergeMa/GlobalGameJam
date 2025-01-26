@@ -165,6 +165,11 @@ void APlayerPawn::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const 
 	}
 }
 
+float APlayerPawn::GetHealth()
+{
+	return CurrentHealth / MaxHealth;
+}
+
 void APlayerPawn::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if(OtherActor->GetClass()->ImplementsInterface(UInteractible::StaticClass()))

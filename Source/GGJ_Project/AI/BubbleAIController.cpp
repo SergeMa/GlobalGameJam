@@ -5,7 +5,7 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "GGJ_Project/PlayerPawn.h"
 #include "GGJ_Project/AI/BubbleAIBot/RangeAttackBot.h"
-
+#include "Kismet/GameplayStatics.h"
 
 
 ABubbleAIController::ABubbleAIController()
@@ -36,6 +36,17 @@ void ABubbleAIController::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus S
 void ABubbleAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	UBlackboardComponent* BlackBoard = GetBlackboardComponent();
+	if (!BlackBoard)return;
+
+	FVector CharacterLocation;
+	APlayerPawn* MyCharacter = Cast<APlayerPawn>(UGameplayStatics::GetActorOfClass(GetWorld(), APlayerPawn::StaticClass()));
+	if (MyCharacter)
+	{
+	BlackBoard->SetValueAsObject("Character", MyCharacter);
+		
+	}
 	
 }
 

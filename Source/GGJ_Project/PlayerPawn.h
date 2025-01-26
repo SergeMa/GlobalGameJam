@@ -84,6 +84,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
+	UFUNCTION(BlueprintCallable)
+	float GetHealth();
 private:
 	UFUNCTION()
 	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
