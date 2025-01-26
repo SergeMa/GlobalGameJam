@@ -50,6 +50,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Sound)
 	USoundWave* SoundPickup;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Sound)
+	USoundWave* AttackedSound;
+
 protected:
 	virtual void BeginPlay() override;
 

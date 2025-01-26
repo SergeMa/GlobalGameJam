@@ -158,6 +158,7 @@ void APlayerPawn::AttachGun(const bool bShouldBeInHand)
 
 void APlayerPawn::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
+	UGameplayStatics::PlaySound2D(this, AttackedSound);
 	CurrentHealth = FMath::Clamp(CurrentHealth - Damage, 0, MaxHealth);
 	if (CurrentHealth == 0)
 	{

@@ -51,6 +51,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Experience)
 	int Experience = 1;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = DmgText)
+	TSubclassOf<AActor> DmgTextActorClass;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Niagara)
 	UNiagaraSystem* Niagara;
 
