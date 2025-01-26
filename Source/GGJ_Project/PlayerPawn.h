@@ -41,6 +41,15 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Input)
 	UInputAction* ActionShoot;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
+	UAudioComponent* AudioComp;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Sound)
+	USoundWave* SadMusic;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Sound)
+	USoundWave* SoundPickup;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -80,6 +89,12 @@ public:
 	
 	UFUNCTION()
 	void AttachGun(bool bShouldBeInHand);
+
+	FTimerHandle TimerOpenMenu;
+	
+	UFUNCTION()
+	void DieDramatically();
+	void LoadMenu();
 
 	UFUNCTION(BlueprintCallable)
 	void HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);

@@ -11,6 +11,7 @@ class USoundBase;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAnyPickupCollected);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTimeToSpawnPickups);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDifficultyIncreased);
 
 UCLASS()
 class GGJ_PROJECT_API ABubblesGameMode : public AGameModeBase
@@ -31,7 +32,7 @@ private:
 	int PlayerExperience;
 
 	UPROPERTY(EditAnywhere, Category = Difficulty)
-	int RequiredExperience = 1;
+	int RequiredExperience;
 
 	UPROPERTY(EditAnywhere, Category = Difficulty)
 	int PlayerLevel;
@@ -44,6 +45,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sound)
 	USoundWave* SoundLevelUp;
 
+	UPROPERTY()
+	FOnDifficultyIncreased OnDifficultyIncreased;
+	
 	UPROPERTY()
 	FOnTimeToSpawnPickups OnTimeToSpawnPickups;
 

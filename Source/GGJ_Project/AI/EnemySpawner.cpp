@@ -5,7 +5,7 @@
 #include "BaseEnemyCharacter.h"
 #include "GGJ_Project/BubblesGameMode.h"
 
-AEnemySpawner::AEnemySpawner() : DifficultyLevel(0), EnemiesToSpawn(MinSpawnCount)
+AEnemySpawner::AEnemySpawner() : DifficultyLevel(1)
 {
 	PrimaryActorTick.bCanEverTick = false;
 }
@@ -13,11 +13,10 @@ AEnemySpawner::AEnemySpawner() : DifficultyLevel(0), EnemiesToSpawn(MinSpawnCoun
 void AEnemySpawner::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if (const ABubblesGameMode* GameMode = GetWorld()->GetAuthGameMode<ABubblesGameMode>())
+
+	if (ABubblesGameMode* GameMode = GetWorld()->GetAuthGameMode<ABubblesGameMode>())
 	{
-		DifficultyLevel = GameMode->GetDifficultyLevel();
-		EnemiesToSpawn = MinSpawnCount + DifficultyLevel * LevelMultiplier;
+		GameMode->OnDifficultyIncreased.AddDynamic(this, &AEnemySpawner::OnDifficultyIncreased);
 	}
 	
 	GetWorldTimerManager().SetTimer(SpawnTimer, this, &AEnemySpawner::SpawnEnemy, SpawnRate, true, false);
@@ -32,12 +31,7 @@ void AEnemySpawner::SpawnEnemy()
 		AActor* EnemySpawn = GetWorld()->SpawnActor<AActor>(EnemyType, GetActorLocation(), GetActorRotation(), SpawnParameters);
 		if (EnemySpawn)
 		{
-			EnemiesToSpawn--;
-			if (EnemiesToSpawn == 0)
-			{
-				GetWorldTimerManager().ClearTimer(SpawnTimer);
-			}
-			UE_LOG(LogTemp, Verbose, TEXT("Enemy spawned. Enemies to spawn: %d"), EnemiesToSpawn);
+			UE_LOG(LogTemp, Verbose, TEXT("Enemy spawned."));
 		}
 		else
 		{
@@ -48,5 +42,11 @@ void AEnemySpawner::SpawnEnemy()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Enemy type is not selected."));
 	}
+}
+
+void AEnemySpawner::OnDifficultyIncreased()
+{
+	SpawnRate = 320 / DifficultyLevel;
+	GetWorldTimerManager().SetTimer(SpawnTimer, this, &AEnemySpawner::SpawnEnemy, SpawnRate, true, false);
 }
 

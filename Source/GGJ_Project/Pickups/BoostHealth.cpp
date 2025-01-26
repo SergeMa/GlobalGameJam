@@ -30,7 +30,6 @@ void ABoostHealth::Interact_Implementation(APlayerPawn* PlayerPawn)
 	PlayerPawn->CurrentHealth = FMath::Clamp(PlayerPawn->CurrentHealth + BonusHealing, 0, PlayerPawn->MaxHealth);
 	if (ABubblesGameMode* GameMode = GetWorld()->GetAuthGameMode<ABubblesGameMode>())
 	{
-		GameMode->AudioComp->Play(0);
 		GameMode->OnAnyPickupCollected.Broadcast();
 	}
 }

@@ -6,19 +6,23 @@
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
 
-ABubblesGameMode::ABubblesGameMode() : DifficultyLevel(0), PlayerExperience(0), PlayerLevel(0)
+ABubblesGameMode::ABubblesGameMode() : DifficultyLevel(0), PlayerExperience(0), RequiredExperience(1), PlayerLevel(0)
 {
 	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
 }
 
 int ABubblesGameMode::GetDifficultyLevel() const { return DifficultyLevel; }
 
-void ABubblesGameMode::IncrementDifficultyLevel() { DifficultyLevel++; }
+void ABubblesGameMode::IncrementDifficultyLevel()
+{
+	DifficultyLevel++;
+	OnDifficultyIncreased.Broadcast();
+}
 
 void ABubblesGameMode::AddPlayerExperience(const int& Experience)
 {
 
-	UE_LOG(LogTemp, Display, TEXT("Experience gained: %d. Player level: %d"), Experience, PlayerLevel);
+	UE_LOG(LogTemp, Display, TEXT("Experience gained: %d. To level up: %d."), Experience, RequiredExperience - PlayerLevel);
 	
 	PlayerExperience += Experience;
 	if (PlayerExperience >= RequiredExperience)
@@ -33,11 +37,11 @@ void ABubblesGameMode::LevelUpPlayer()
 	IncrementDifficultyLevel();
 	UGameplayStatics::PlaySound2D(GetWorld(), SoundLevelUp, 1.0f);
 	OnTimeToSpawnPickups.Broadcast();
-	UE_LOG(LogTemp, Display, TEXT("OnTimeToSpawnPickups.Broadcast()"));
+	UE_LOG(LogTemp, Display, TEXT("Player level: %d"), PlayerLevel);
 }
 
 void ABubblesGameMode::StartPlay()
 {
 	Super::StartPlay();
-	UGameplayStatics::PlaySound2D(GetWorld(), MainSoundtrack, 1.0f);
+	AudioComp->SetSound(MainSoundtrack);
 }
