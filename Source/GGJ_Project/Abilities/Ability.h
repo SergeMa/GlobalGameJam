@@ -27,7 +27,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
 	int Level = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
-	float Damage = 10.f;
+	float Damage = 20.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
 	float DamageInc = 10.f;
 	

@@ -41,6 +41,9 @@ APlayerPawn::APlayerPawn()
 
 	// Abilities
 	Abilities = CreateDefaultSubobject<UPlayerAbilityComponent>(TEXT("Abilities"));
+
+	GunMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GunMesh"));
+	GunMeshComp->SetupAttachment(GetMesh());
 }
 
 void APlayerPawn::BeginPlay()
@@ -55,10 +58,13 @@ void APlayerPawn::BeginPlay()
 		}
 	}
 
+	// Overlaps
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &APlayerPawn::OnBeginOverlap);
-
+	// Take Damage
 	OnTakeAnyDamage.AddDynamic(this, &APlayerPawn::HandleTakeAnyDamage);
+	// Attach GunMeshComp to spine bone
+	AttachGun(false);
 }
 
 void APlayerPawn::Tick(float DeltaTime)
@@ -133,6 +139,20 @@ void APlayerPawn::ResetSpeed()
 {
 	SpeedMultiplier = 1;
 	GetCharacterMovement()->MaxWalkSpeed = 600;
+}
+
+void APlayerPawn::AttachGun(const bool bShouldBeInHand)
+{
+	if (bShouldBeInHand)
+	{
+		FName SocketHands = "GunPlay"; 
+		GunMeshComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, SocketHands);
+	}
+	else
+	{
+		FName SocketSpine = "GunIdle"; 
+		GunMeshComp->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, SocketSpine);
+	}
 }
 
 void APlayerPawn::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)

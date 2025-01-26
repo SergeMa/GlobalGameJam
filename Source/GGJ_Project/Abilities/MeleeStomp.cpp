@@ -65,11 +65,11 @@ void UMeleeStomp::UpgradeAbility()
 {
 	Super::UpgradeAbility();
 	Range += RangeInc;
-	Cooldown -= CooldownInc;
+	Cooldown -= FMath::Clamp(CooldownInc, 1.f, 10.f);
 	GetWorld()->GetTimerManager().SetTimer(CooldownTimer, this, &UAbility::UseAbility, Cooldown, true, false);
 
 	if(GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Melee ability upgrade!"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Melee ability upgrade!"));
 	}
 }

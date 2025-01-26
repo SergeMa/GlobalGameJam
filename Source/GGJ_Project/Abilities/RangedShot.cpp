@@ -7,6 +7,7 @@
 #include "Components/AudioComponent.h"
 #include "Engine/DamageEvents.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "Engine/StaticMeshActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GGJ_Project/PlayerPawn.h"
 #include "GGJ_Project/AI/Projectile.h"
@@ -39,7 +40,9 @@ void URangedShot::UseAbility()
 			Player->GetCharacterMovement()->SetMovementMode(MOVE_None);
 			const float AnimLength = Player->PlayAnimMontage(ShotMontage, 0.5f);
 			GetWorld()->GetTimerManager().SetTimer(ShotAnimTimer, this, &URangedShot::OnShotEnd, AnimLength*2, false);
-		
+
+			Player->AttachGun(true);
+			
 			UE_LOG(LogTemp, Verbose, TEXT("Ranged Shot used"));
 		}
 	}
@@ -61,6 +64,7 @@ void URangedShot::OnShotEnd()
 {
 	bIsShooting = false;
 	Player->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	Player->AttachGun(false);
 }
 
 
@@ -68,7 +72,7 @@ void URangedShot::SpawnProjectile()
 {
 	if (BulletClass)
 	{
-		FVector Location = Player->GetMesh()->GetSocketLocation("Barrel");
+		FVector Location = Player->GetMesh()->GetSocketLocation(TEXT("Barrel"));
 		FRotator Rotation = Player->GetActorRotation();
 		FActorSpawnParameters SpawnParameters;
 		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -76,6 +80,7 @@ void URangedShot::SpawnProjectile()
 		if (Projectile)
 		{
 			Projectile->SetDamage(Damage);
+			Projectile->SetScalingToDeath(BulletLifeSpan);
 			FVector LaunchDirection = Rotation.Vector();
 			Projectile->SetInitialVelocity(LaunchDirection);
 			if(GEngine)
@@ -87,5 +92,15 @@ void URangedShot::SpawnProjectile()
 		{
 			GEngine->AddOnScreenDebugMessage(6, 5, FColor::Red, TEXT("Bullet spawn failed"));
 		}
+	}
+}
+
+void URangedShot::UpgradeAbility()
+{
+	Super::UpgradeAbility();
+	BulletLifeSpan += BulletLifeSpanInc;
+	if(GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Ranged ability upgrade!"));
 	}
 }

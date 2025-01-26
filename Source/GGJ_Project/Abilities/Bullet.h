@@ -22,6 +22,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Damage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float ScalingInc;
 
 protected:
 	virtual void BeginPlay() override;
@@ -36,4 +38,5 @@ public:
 		int OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	virtual void SetInitialVelocity(FVector& LaunchVelocity);
+	void SetScalingToDeath(float Lifespan);
 };

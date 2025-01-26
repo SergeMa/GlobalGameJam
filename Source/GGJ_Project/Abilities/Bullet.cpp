@@ -10,7 +10,7 @@
 
 ABullet::ABullet()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	SetRootComponent(Mesh);
@@ -32,6 +32,11 @@ void ABullet::BeginPlay()
 void ABullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	// Lifespan increases 1 2 3 4 5 +++
+	FVector Scale = GetActorScale3D();
+	float NewScale = FMath::FInterpConstantTo(Scale.X, 0, DeltaTime, 1.f/ScalingInc);
+	SetActorScale3D(FVector(NewScale));
 }
 
 void ABullet::SetDamage(float Value)
@@ -51,7 +56,6 @@ void ABullet::OnBulletBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 	}
 	else
 	{
-		Destroy();
 		UE_LOG(LogTemp, Verbose, TEXT("Bullet hit a wall"));
 	}
 }
@@ -59,4 +63,10 @@ void ABullet::OnBulletBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 void ABullet::SetInitialVelocity(FVector& LaunchVelocity)
 {
 	ProjectileMovement->Velocity = LaunchVelocity * ProjectileMovement->InitialSpeed;
+}
+
+void ABullet::SetScalingToDeath(float Lifespan)
+{
+	SetLifeSpan(Lifespan);
+	ScalingInc = Lifespan; 
 }

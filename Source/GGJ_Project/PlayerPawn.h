@@ -75,6 +75,12 @@ public:
 	void BoostSpeed(float BoostTimer);
 	void ResetSpeed();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gunplay)
+	UStaticMeshComponent* GunMeshComp;
+	
+	UFUNCTION()
+	void AttachGun(bool bShouldBeInHand);
+
 	UFUNCTION(BlueprintCallable)
 	void HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
