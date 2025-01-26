@@ -36,7 +36,7 @@ void AMeleeAttackBot::OnCollisionEndOverlap(UPrimitiveComponent* OverlappedCompo
 }
 void AMeleeAttackBot::MeeleAttack(AActor* Actor)
 {
-	GetActorLocation()=  GetActorForwardVector() * 1000;
+	GetActorLocation() = GetActorForwardVector() * 1000;
 	PlayAnimMontage(AnimMontage);
 	FDamageEvent DEvent;
 	Actor->TakeDamage(10, DEvent, Controller, this);
