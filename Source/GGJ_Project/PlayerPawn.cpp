@@ -12,7 +12,8 @@
 #include "Interactible.h"
 #include "Abilities/PlayerAbilityComponent.h"
 #include "Abilities/RangedShot.h"
-#include "Math/UnitConversion.h"
+#include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 APlayerPawn::APlayerPawn()
 {
@@ -44,6 +45,10 @@ APlayerPawn::APlayerPawn()
 
 	GunMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GunMesh"));
 	GunMeshComp->SetupAttachment(GetMesh());
+
+	// Add sound
+	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
+	AudioComp->SetupAttachment(RootComponent);
 }
 
 void APlayerPawn::BeginPlay()
@@ -158,10 +163,61 @@ void APlayerPawn::AttachGun(const bool bShouldBeInHand)
 void APlayerPawn::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
 	CurrentHealth = FMath::Clamp(CurrentHealth - Damage, 0, MaxHealth);
+	if (CurrentHealth == 0)
+	{
+		DieDramatically();
+	}
 
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Red, FString::Printf(TEXT("Health: %f"), CurrentHealth));
+	}
+}
+
+void APlayerPawn::DieDramatically()
+{
+	// Play sad music
+	if(SadMusic)
+		UGameplayStatics::PlaySound2D(this, SadMusic);
+
+	// Detach camera
+	Camera->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	
+	// Disable any input and MovementComponent for capsule movement
+	DisableInput(Cast<APlayerController>(Controller));
+	GetCharacterMovement()->DisableMovement();
+
+	// Let the gun fly
+	GunMeshComp->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+
+	// Enable ragdoll for pawn mesh
+	FName Collision = FName(TEXT("BlockAllDynamic"));
+	GetMesh()->SetCollisionProfileName(Collision, true);
+	GetMesh()->SetAllBodiesSimulatePhysics(true);
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->WakeAllRigidBodies();
+	// Enable ragdoll for gun mesh
+	GunMeshComp->SetCollisionProfileName(Collision, true);
+	GunMeshComp->SetSimulatePhysics(true);
+	GunMeshComp->WakeAllRigidBodies();
+
+	// Move capsule in the sky, so that bots stop attacking it
+	UCapsuleComponent* CapsuleForCamera = GetCapsuleComponent();
+	FVector Location = CapsuleForCamera->GetComponentLocation();
+	CapsuleForCamera->SetWorldLocation(FVector(Location.X, Location.Y, Location.Z+1000.f));
+	
+	// Set timer to go to menu
+	GetWorldTimerManager().SetTimer(TimerOpenMenu, this, &APlayerPawn::LoadMenu, 5.f, false);
+}
+
+void APlayerPawn::LoadMenu()
+{
+	FName LevelName = "MenuMap";
+	FLatentActionInfo LatentInfo;
+	UGameplayStatics::OpenLevel(this, LevelName, true);
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::Printf(TEXT("Health: %f, called load menu"), CurrentHealth));
 	}
 }
 
