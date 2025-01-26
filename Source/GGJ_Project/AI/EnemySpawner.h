@@ -16,18 +16,10 @@ class GGJ_PROJECT_API AEnemySpawner : public AActor
 private:
 	UPROPERTY(VisibleAnywhere)
 	int DifficultyLevel;
-	UPROPERTY(VisibleAnywhere)
-	int EnemiesToSpawn;
 	
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Spawner)
-	int MinSpawnCount = 100;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Spawner)
-	int LevelMultiplier = 25;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Spawner)
-	float SpawnRate = 1.f;
+	float SpawnRate = 320;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Spawner)
 	TSubclassOf<ABaseEnemyCharacter> EnemyType;
@@ -44,5 +36,7 @@ public:
 
 	UFUNCTION()
 	void SpawnEnemy();
-	
+
+	UFUNCTION()
+	void OnDifficultyIncreased();
 };

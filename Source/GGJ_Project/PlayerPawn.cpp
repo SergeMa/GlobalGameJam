@@ -45,10 +45,6 @@ APlayerPawn::APlayerPawn()
 
 	GunMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GunMesh"));
 	GunMeshComp->SetupAttachment(GetMesh());
-
-	// Add sound
-	AudioComp = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
-	AudioComp->SetupAttachment(RootComponent);
 }
 
 void APlayerPawn::BeginPlay()
@@ -179,6 +175,7 @@ void APlayerPawn::DieDramatically()
 	// Play sad music
 	if(SadMusic)
 		UGameplayStatics::PlaySound2D(this, SadMusic);
+	
 
 	// Detach camera
 	Camera->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
@@ -235,5 +232,6 @@ void APlayerPawn::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 			GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Red, FString::Printf(TEXT("Interacted with %s"), *OtherActor->GetName()));
 		}
 		IInteractible::Execute_Interact(OtherActor, this);
+		UGameplayStatics::PlaySound2D(this, SoundPickup);
 	}
 }
