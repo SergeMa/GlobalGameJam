@@ -19,13 +19,13 @@ public:
 	UMeleeStomp();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
-	float Range = 200.f;
+	float Range = 250.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
 	float RangeInc = 50.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
-	float Cooldown = 20.f;
+	float Cooldown = 10.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
-	float CooldownInc = 5.f;
+	float CooldownInc = 1.f;
 
 	FTimerHandle CooldownTimer;
 

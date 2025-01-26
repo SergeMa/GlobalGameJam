@@ -25,6 +25,11 @@ protected:
 public:
 	virtual void UseAbility() override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
+	float BulletLifeSpan = 0.5f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ability)
+	float BulletLifeSpanInc = 0.5f;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gunplay)
 	bool bIsShooting;
 
@@ -42,4 +47,5 @@ public:
 	TSubclassOf<ABullet> BulletClass;
 	
 	void SpawnProjectile();
+	virtual void UpgradeAbility() override;
 };

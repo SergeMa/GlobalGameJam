@@ -27,6 +27,12 @@ public:
 
 	UPROPERTY()
 	bool bShouldGoUp = true;
+
+	UPROPERTY()
+	float MaxHeight;
+
+	UPROPERTY()
+	float MinHeight;
 	
 	UFUNCTION()
 	virtual void Tick(float DeltaTime) override;

@@ -16,6 +16,9 @@ APickup::APickup()
 void APickup::BeginPlay()
 {
 	Super::BeginPlay();
+
+	MaxHeight = GetActorLocation().Z+500.f;
+	MinHeight = GetActorLocation().Z+100.f;
 }
 
 void APickup::Interact_Implementation(APlayerPawn* PlayerPawn)
@@ -32,16 +35,21 @@ void APickup::Tick(float DeltaTime)
 	float Offset;
 	if (bShouldGoUp)
 	{
-		Offset = FMath::Lerp(Location.Z, 600.f, DeltaTime);
-		if(Location.Z > 400.f)
+		Offset = FMath::Lerp(Location.Z, Location.Z + 200, DeltaTime);
+		if(Location.Z > MaxHeight)
 			bShouldGoUp = false;
 	}
 	else
 	{
-		Offset = FMath::Lerp(Location.Z, 0.f, DeltaTime);
-		if(Location.Z < 100.f)
+		Offset = FMath::Lerp(Location.Z, Location.Z - 200, DeltaTime);
+		if(Location.Z < MinHeight)
 			bShouldGoUp = true;
 	}
 	FVector NewLocation = FVector(Location.X, Location.Y, Offset);
 	SetActorLocation(NewLocation);
+
+	if(GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(14, 5.f, FColor::Red, FString::Printf(TEXT("ShouldGoUp: %i, max: %g, min: %g, curr: %g"), bShouldGoUp, MaxHeight, MinHeight, NewLocation.Z));
+	}
 }
