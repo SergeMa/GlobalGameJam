@@ -22,7 +22,7 @@ void ABubblesGameMode::IncrementDifficultyLevel()
 void ABubblesGameMode::AddPlayerExperience(const int& Experience)
 {
 
-	UE_LOG(LogTemp, Display, TEXT("Experience gained: %d. To level up: %d."), Experience, RequiredExperience - PlayerLevel);
+	UE_LOG(LogTemp, Display, TEXT("Experience gained: %d. To level up: %d."), Experience, RequiredExperience - PlayerExperience);
 	
 	PlayerExperience += Experience;
 	if (PlayerExperience >= RequiredExperience)

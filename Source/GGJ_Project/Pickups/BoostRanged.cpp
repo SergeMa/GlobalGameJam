@@ -21,23 +21,10 @@ ABoostRanged::ABoostRanged()
 void ABoostRanged::BeginPlay()
 {
 	Super::BeginPlay();
-	if (ABubblesGameMode* GameMode = GetWorld()->GetAuthGameMode<ABubblesGameMode>())
-	{
-		GameMode->OnAnyPickupCollected.AddDynamic(this, &ABoostRanged::HandleAnyPickup);
-	}
 }
 
 void ABoostRanged::Interact_Implementation(APlayerPawn* PlayerPawn)
 {
 	PlayerPawn->Abilities->RangedShot->UpgradeAbility();
-	if (ABubblesGameMode* GameMode = GetWorld()->GetAuthGameMode<ABubblesGameMode>())
-	{
-		GameMode->AudioComp->Play(0);
-		GameMode->OnAnyPickupCollected.Broadcast();
-	}
-}
-
-void ABoostRanged::HandleAnyPickup()
-{
 	Destroy();
 }

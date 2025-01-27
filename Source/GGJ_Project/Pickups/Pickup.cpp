@@ -23,10 +23,6 @@ void APickup::BeginPlay()
 
 void APickup::Interact_Implementation(APlayerPawn* PlayerPawn)
 {
-	if (ABubblesGameMode* GameMode = GetWorld()->GetAuthGameMode<ABubblesGameMode>())
-	{
-		GameMode->OnAnyPickupCollected.Broadcast();
-	}
 }
 
 void APickup::Tick(float DeltaTime)

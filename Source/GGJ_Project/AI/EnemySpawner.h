@@ -15,11 +15,17 @@ class GGJ_PROJECT_API AEnemySpawner : public AActor
 
 private:
 	UPROPERTY(VisibleAnywhere)
-	int DifficultyLevel;
+	float DifficultyLevel;
+
+	UPROPERTY(VisibleAnywhere)
+	int EnemiesToSpawn;
+
+	UPROPERTY(VisibleAnywhere)
+	int EnemiesSpawned;
 	
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Spawner)
-	float SpawnRate = 320;
+	float SpawnRate = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Spawner)
 	TSubclassOf<ABaseEnemyCharacter> EnemyType;

@@ -18,24 +18,10 @@ ABoostSpeed::ABoostSpeed()
 void ABoostSpeed::BeginPlay()
 {
 	Super::BeginPlay();
-	if (ABubblesGameMode* GameMode = GetWorld()->GetAuthGameMode<ABubblesGameMode>())
-	{
-		GameMode->OnAnyPickupCollected.AddDynamic(this, &ABoostSpeed::HandleAnyPickup);
-	}
 }
 
 void ABoostSpeed::Interact_Implementation(APlayerPawn* PlayerPawn)
 {
 	PlayerPawn->BoostSpeed(BoostTimer);
-	if (ABubblesGameMode* GameMode = GetWorld()->GetAuthGameMode<ABubblesGameMode>())
-	{
-		GameMode->AudioComp->Play(0);
-		GameMode->OnAnyPickupCollected.Broadcast();
-	}
-}
-
-void ABoostSpeed::HandleAnyPickup()
-{
 	Destroy();
 }
-

@@ -24,8 +24,4 @@ protected:
 	virtual void BeginPlay() override;
 	
 	virtual void Interact_Implementation(APlayerPawn* PlayerPawn) override;
-
-public:
-	UFUNCTION()
-	virtual void HandleAnyPickup();
 };

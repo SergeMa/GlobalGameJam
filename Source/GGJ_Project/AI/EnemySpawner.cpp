@@ -5,7 +5,7 @@
 #include "BaseEnemyCharacter.h"
 #include "GGJ_Project/BubblesGameMode.h"
 
-AEnemySpawner::AEnemySpawner() : DifficultyLevel(1)
+AEnemySpawner::AEnemySpawner() : DifficultyLevel(0), EnemiesToSpawn(1), EnemiesSpawned(0)
 {
 	PrimaryActorTick.bCanEverTick = false;
 }
@@ -27,10 +27,14 @@ void AEnemySpawner::SpawnEnemy()
 	if (EnemyType != nullptr)
 	{
 		FActorSpawnParameters SpawnParameters;
-		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 		AActor* EnemySpawn = GetWorld()->SpawnActor<AActor>(EnemyType, GetActorLocation(), GetActorRotation(), SpawnParameters);
 		if (EnemySpawn)
 		{
+			EnemiesSpawned++;
+			EnemiesToSpawn--;
+			if(EnemiesToSpawn < 1)
+				GetWorldTimerManager().ClearTimer(SpawnTimer);
 			UE_LOG(LogTemp, Verbose, TEXT("Enemy spawned."));
 		}
 		else
@@ -46,7 +50,12 @@ void AEnemySpawner::SpawnEnemy()
 
 void AEnemySpawner::OnDifficultyIncreased()
 {
-	SpawnRate = 320 / DifficultyLevel;
+	DifficultyLevel++;
+	EnemiesToSpawn = (FMath::Square(DifficultyLevel)+FMath::Square(DifficultyLevel+1))/8;
 	GetWorldTimerManager().SetTimer(SpawnTimer, this, &AEnemySpawner::SpawnEnemy, SpawnRate, true, false);
+	if(GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Purple, FString::Printf(TEXT("EnemiesToSpawn: %d, difficulty level: %g"), EnemiesToSpawn, DifficultyLevel));
+	}
 }
 
