@@ -51,7 +51,7 @@ void AEnemySpawner::SpawnEnemy()
 void AEnemySpawner::OnDifficultyIncreased()
 {
 	DifficultyLevel++;
-	EnemiesToSpawn = (FMath::Square(DifficultyLevel)+FMath::Square(DifficultyLevel+1))/8;
+	EnemiesToSpawn = (FMath::Square(DifficultyLevel)+FMath::Square(DifficultyLevel+1));
 	GetWorldTimerManager().SetTimer(SpawnTimer, this, &AEnemySpawner::SpawnEnemy, SpawnRate, true, false);
 	if(GEngine)
 	{

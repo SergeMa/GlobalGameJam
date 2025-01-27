@@ -65,7 +65,7 @@ void UMeleeStomp::UpgradeAbility()
 {
 	Super::UpgradeAbility();
 	Range += RangeInc;
-	Cooldown -= FMath::Clamp(CooldownInc, 1.f, 10.f);
+	Cooldown = FMath::Clamp(Cooldown - CooldownInc, 1.f, 10.f);
 	GetWorld()->GetTimerManager().SetTimer(CooldownTimer, this, &UAbility::UseAbility, Cooldown, true, false);
 
 	if(GEngine)
