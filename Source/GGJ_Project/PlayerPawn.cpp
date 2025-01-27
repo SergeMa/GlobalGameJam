@@ -129,10 +129,12 @@ void APlayerPawn::BoostSpeed(float BoostTimer)
 {
 	SpeedMultiplier = 2;
 	GetCharacterMovement()->MaxWalkSpeed = 1200;
-	GetWorldTimerManager().SetTimer(BoostSpeedTimer, this, &APlayerPawn::ResetSpeed, BoostTimer, false);
+	float TimeLeft = GetWorldTimerManager().GetTimerRemaining(BoostSpeedTimer);
+	float NewTime = BoostTimer + TimeLeft;
+	GetWorldTimerManager().SetTimer(BoostSpeedTimer, this, &APlayerPawn::ResetSpeed, NewTime, false);
 	if(GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Speed Boosted: %g"), GetCharacterMovement()->MaxWalkSpeed));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Speed Boosted: %g"), NewTime));
 	}
 }
 

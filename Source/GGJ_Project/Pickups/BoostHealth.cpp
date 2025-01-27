@@ -18,23 +18,11 @@ ABoostHealth::ABoostHealth()
 void ABoostHealth::BeginPlay()
 {
 	Super::BeginPlay();
-	if (ABubblesGameMode* GameMode = GetWorld()->GetAuthGameMode<ABubblesGameMode>())
-	{
-		GameMode->OnAnyPickupCollected.AddDynamic(this, &ABoostHealth::HandleAnyPickup);
-	}
 }
 
 void ABoostHealth::Interact_Implementation(APlayerPawn* PlayerPawn)
 {
 	PlayerPawn->MaxHealth += BonusHealth;
 	PlayerPawn->CurrentHealth = FMath::Clamp(PlayerPawn->CurrentHealth + BonusHealing, 0, PlayerPawn->MaxHealth);
-	if (ABubblesGameMode* GameMode = GetWorld()->GetAuthGameMode<ABubblesGameMode>())
-	{
-		GameMode->OnAnyPickupCollected.Broadcast();
-	}
-}
-
-void ABoostHealth::HandleAnyPickup()
-{
 	Destroy();
 }
